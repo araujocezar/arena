@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 	if (auth()->guest()) {
-		return view('welcome');
+		return redirect()->route('login');
 	} else {
-		return redirect()->route('home');
+		return redirect()->route('profile');
 	}
 });
 
@@ -25,12 +25,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
+Route::get('/listagem-alunos', 'AlunoController@listarAlunos')->name('listagem-alunos');
 
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('table-list', function () {
-		return view('pages.table_list');
-	})->name('table');
+
 
 	Route::get('typography', function () {
 		return view('pages.typography');
