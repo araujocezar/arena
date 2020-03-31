@@ -11,6 +11,6 @@ class AlunoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Aluno::class, 10)->create();
     }
 }
