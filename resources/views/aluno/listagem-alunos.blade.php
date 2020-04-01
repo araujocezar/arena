@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Table List')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Listagem dos Alunos')])
 
 @section('content')
     <div class="content">
@@ -8,12 +8,11 @@
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">Listagem dos Alunos</h4>
-                            <p class="card-category"> Futvolei</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table">
-                                    <thead class=" text-primary">
+                                    <thead class=" text-primary" >
                                     <th>
                                         CPF
                                     </th>
