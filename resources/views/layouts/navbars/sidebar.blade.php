@@ -11,7 +11,7 @@
   <div class="sidebar-wrapper">
     <ul class="nav">
       <li class="nav-item{{ $activePage == 'inicio' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('listagem-alunos') }}">
+        <a class="nav-link" href="{{ route('inicio') }}">
           <i class=" material-icons">home</i>
           <span class="sidebar-normal">{{ __('Inicio') }} </span>
         </a>
@@ -22,8 +22,8 @@
           <span class="sidebar-normal">{{ __('Perfil do usuário') }} </span>
         </a>
       </li>
-      <li class="nav-item{{ $activePage == 'cadastrar-alunos' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('cadastrar-aluno') }}">
+      <li class="nav-item{{ $activePage == 'cadastro-aluno' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('cadastro-aluno') }}">
           <i class=" material-icons">person</i>
           <span class="sidebar-normal">{{ __('Cadastrar novo aluno') }} </span>
         </a>
@@ -57,6 +57,12 @@
             </li>
           </ul>
         </div>
+      </li>
+      <li class="nav-item{{ $activePage == 'listagem-planos' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('table') }}">
+          <i class=" material-icons">folder_open</i>
+          <span class="sidebar-normal">{{ __('Planos') }} </span>
+        </a>
       </li>
     </ul>
   </div>

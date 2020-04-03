@@ -26,31 +26,17 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::get('/listagem-alunos', 'AlunoController@listarAlunos')->name('listagem-alunos');
-Route::get('/cadastrar-aluno', function () {
+Route::get('/cadastro-aluno', function () {
 	return view('aluno.cadastro-aluno');
-})->name('cadastrar-aluno');
-
+})->name('cadastro-aluno');
+Route::get('/inicio', function () {
+	return view('aluno.inicio');
+})->name('inicio');
 Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('table-list', function () {
 		return view('pages.table_list');
 	})->name('table');
-
-	Route::get('typography', function () {
-		return view('pages.typography');
-	})->name('typography');
-
-	Route::get('icons', function () {
-		return view('pages.icons');
-	})->name('icons');
-
-	Route::get('map', function () {
-		return view('pages.map');
-	})->name('map');
-
-	Route::get('upgrade', function () {
-		return view('pages.upgrade');
-	})->name('upgrade');
 });
 
 Route::group(['middleware' => 'auth'], function () {

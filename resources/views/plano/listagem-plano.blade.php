@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'cadastro-aluno', 'titlePage' => __('Cadastro de Aluno')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Listar Planos')])
 
 @section('content')
 <div class="content">
@@ -7,7 +7,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-header-primary">
-                        <h4 class="card-title ">Cadastro de Aluno</h4>
+                        <h4 class="card-title ">Listar Planos</h4>
                     </div>
                     <div class="card-body">
                     </div>
