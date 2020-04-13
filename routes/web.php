@@ -25,7 +25,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::get('/listagem-alunos', 'AlunoController@listarAlunos')->name('listagem-alunos');
+Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name('listagem-alunos');
 Route::get('/cadastro-aluno', function () {
 	return view('aluno.cadastro-aluno');
 })->name('cadastro-aluno');

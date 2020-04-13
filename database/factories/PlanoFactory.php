@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Plano::class, function (Faker $faker) {
     return [
-        //
+        'dias_semana' => $faker->numberBetween(1, 5),
+        'preco' => $faker->numberBetween(80, 120),
+        'categoria_id' => $faker->numberBetween(1, 2)
     ];
 });
