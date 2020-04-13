@@ -11,6 +11,16 @@ class CategoriaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('categorias')->insert([
+            'tipo' => 'Futvolei',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('categorias')->insert([
+            'tipo' => 'Funcional',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }

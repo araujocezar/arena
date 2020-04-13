@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class PlanoSeeder extends Seeder
+class AlunoplanoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class PlanoSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Plano::class, 10)->create();
+        factory(App\Alunoplano::class, 15)->create();
     }
 }

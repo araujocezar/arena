@@ -38,19 +38,19 @@
         <div class="collapse {{ ($activePage == 'listagem-alunos' || $activePage == 'listagem-funcional' ||  $activePage == 'listagem-futvolei' ) ? ' show' : '' }}" id="laravelExample">
           <ul class="nav">
             <li class="nav-item{{ $activePage == 'listagem-alunos' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('listagem-alunos') }}">
+              <a class="nav-link" href="{{ route('listagem-alunos', 'todos') }}">
                 <i class=" material-icons">person</i>
                 <span class="sidebar-normal">{{ __('Todos') }} </span>
               </a>
             </li>
             <li class="nav-item{{ $activePage == 'listagem-funcional' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('table') }}">
+              <a class="nav-link" href="{{ route('listagem-alunos', 'funcional') }}">
                 <i class=" material-icons">person</i>
                 <span class="sidebar-normal">{{ __('Funcional') }} </span>
               </a>
             </li>
             <li class="nav-item{{ $activePage == 'listagem-futvolei' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('table') }}">
+              <a class="nav-link" href="{{ route('listagem-alunos', 'futvolei') }}">
                 <i class=" material-icons">person</i>
                 <span class="sidebar-normal">{{ __('Futvôlei') }} </span>
               </a>
