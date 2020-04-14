@@ -12,13 +12,13 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
         DB::table('categorias')->insert([
-            'tipo' => 'Futvolei',
+            'tipo' => 'futvolei',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         DB::table('categorias')->insert([
-            'tipo' => 'Funcional',
+            'tipo' => 'funcional',
             'created_at' => now(),
             'updated_at' => now()
         ]);
