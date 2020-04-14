@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAlunoplanosTable extends Migration
+class CreateAlunoPlanoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateAlunoplanosTable extends Migration
      */
     public function up()
     {
-        Schema::create('alunoplanos', function (Blueprint $table) {
-            $table->id();
+        Schema::create('aluno_plano', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('aluno_id');
             $table->foreign('aluno_id')->references('id')->on('alunos');
             $table->integer('plano_id');

@@ -14,7 +14,7 @@ class CreateAlunosTable extends Migration
     public function up()
     {
         Schema::create('alunos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('cpf');
             $table->string('nome');
             $table->string('email')->nullable();
