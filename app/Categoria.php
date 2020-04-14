@@ -9,7 +9,8 @@ class Categoria extends Model
 
     protected $fillable = ['tipo'];
 
-    public function planos(){
-        return $this->belongsToMany('App\Plano');
+    public function planos()
+    {
+        return $this->hasMany('App\Plano');
     }
 }

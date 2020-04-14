@@ -8,11 +8,17 @@ class Plano extends Model
 {
     protected $fillable = ['dias_semana', 'preco', 'categoria_id'];
 
-    public function alunos(){
+    public function alunos()
+    {
         return $this->belongsToMany(Aluno::class);
     }
+    public function alunoplanos()
+    {
+        return $this->hasMany('App\Alunoplano');
+    }
 
-    public function categoria(){
-        return $this->hasOne('App\Categoria');
+    public function categorias()
+    {
+        return $this->belongsTo('App\Categoria', 'categoria_id');
     }
 }
