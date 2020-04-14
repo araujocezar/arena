@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Aluno;
 use Illuminate\Http\Request;
+use function foo\func;
 
 class AlunoController extends Controller
 {
@@ -14,12 +16,13 @@ class AlunoController extends Controller
             if ($parametros == "todos") {
                 $lista = Aluno::all();
             } else if ($parametros == "futvolei") {
-                //                $lista = Aluno::where()-> planos aluno -> categoria == id futvolei ->get()
-                $lista = Aluno::all();
-                dd($lista);
+                $lista = Aluno::whereHas('planos', function(Builder $query){
+                    $query->where('categoria_id', '=', '1');
+                })->get();
             } else if ($parametros == "funcional") {
-                //                $lista = Aluno::where() -> planos aluno -> categoria == id funcional ->get()
-                $lista = Aluno::all();
+                $lista = Aluno::whereHas('planos', function(Builder $query){
+                    $query->where('categoria_id', '=', '2');
+                })->get();
             }
             return view('aluno.listagem-alunos', ['alunos' => $lista]);
         } catch (\Exception $e) {

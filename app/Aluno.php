@@ -19,7 +19,7 @@ class Aluno extends Model
 //        'min' => 'CPF deve conter 11 digítos',
 //        'max' => 'CPF deve conter 11 digítos',
 //    ];
-    public function alunoplanos(){
-        return $this->hasMany('App\Alunoplano');
+    public function planos(){
+        return $this->belongsToMany('App\Plano');
     }
 }

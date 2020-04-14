@@ -14,7 +14,7 @@ class CreatePlanosTable extends Migration
     public function up()
     {
         Schema::create('planos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('dias_semana');
             $table->double('preco');
             $table->integer('categoria_id');
