@@ -91,10 +91,14 @@ class AlunoController extends Controller
         return $valor;
     }
 
-    function delete($id)
+    public function destroy($tipo, $id)
     {
-        $aluno = Aluno::find($id);
-        $aluno->delete();
-        return back()->withStatus(__('Aluno deletado com sucesso!'));
+        try{
+            $aluno = Aluno::find($id);
+            $aluno->delete();
+            return redirect()->route('listagem-alunos', $tipo)->withStatus(__('Aluno removido com sucesso'));
+        }catch (\Exception $e){
+            return redirect()->route('listagem-alunos', $tipo)->withErros(__('Erro ao deletar aluno'));
+        }
     }
 }
