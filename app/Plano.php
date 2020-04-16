@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Plano extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['dias_semana', 'preco', 'categoria_id'];
 
     public function alunos()

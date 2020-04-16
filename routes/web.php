@@ -25,14 +25,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
+// rotas de aluno
 Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name('listagem-alunos');
 Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
-//Route::post('/listagem-alunos/{categoria}', 'AlunoController@delete')->name('delete-aluno');
+Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
+
+// rotas de plano
 Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-plano');
 Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
 Route::get('/cadastro-aluno', function () {
 	return view('aluno.cadastro-aluno');
 })->name('cadastro-aluno');
+
+
+//
 Route::get('/inicio', function () {
 	return view('aluno.inicio');
 })->name('inicio');

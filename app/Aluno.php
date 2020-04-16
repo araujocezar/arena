@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Aluno extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['cpf', 'nome', 'email', 'sexo', 'telefone', 'data_cadastro'];
 
 //    public static $rules = [
