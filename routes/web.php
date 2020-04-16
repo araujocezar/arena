@@ -29,9 +29,7 @@ Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name
 Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
 //Route::post('/listagem-alunos/{categoria}', 'AlunoController@delete')->name('delete-aluno');
 Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-plano');
-Route::get('/cadastro-plano', function () {
-	return view('plano.criar-plano');
-})->name('cadastro-plano');
+Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
 Route::get('/cadastro-aluno', function () {
 	return view('aluno.cadastro-aluno');
 })->name('cadastro-aluno');
