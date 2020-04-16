@@ -10,9 +10,11 @@
                         <h4 class="card-title ">Listar Planos</h4>
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-12 text-right">
-                                <a href="{{ route('cadastro-plano') }}" class="btn btn-sm btn-primary">{{ __('Novo Plano') }}</a>
+                                <button type="button" class="btn btn-sm btn-primary " data-toggle="modal" data-target="#exampleModal">
+                                    Novo Plano
+                                </button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -69,6 +71,55 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><strong>Cadastrar novo Plano</strong> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-column">
+                        <div class="col-12">
+                            <label for="descricao">Descrição do plano</label>
+                            <input type="text" id="descricao" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="dias_semana">Selecione quantos dias na semana:</label>
+                        <select class="form-control" id="dias_semana">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="tipo">Selecione uma categoria:</label>
+                        <select class="form-control" id="tipo">
+                            @foreach ($categorias as $categoria)
+                            <option value="{{$categoria->id}}">{{$categoria->tipo}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="preco">Valor(R$)</label>
+                        <input type="number" id="preco" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary">Salvar</button>
+            </div>
         </div>
     </div>
 </div>

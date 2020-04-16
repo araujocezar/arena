@@ -12,7 +12,8 @@ class PlanoController extends Controller
     public function listar_plano()
     {
         $lista = Plano::all();
-        return view('plano.listagem-plano', ['planos' => $lista]);
+        $categorias = Categoria::all();
+        return view('plano.listagem-plano', ['planos' => $lista, 'categorias' => $categorias]);
     }
 
     public function criar_plano()
