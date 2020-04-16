@@ -24,32 +24,41 @@ class AlunoController extends Controller
                     $query->where('categoria_id', '=', '2');
                 })->get();
             }
-            return view('aluno.listagem-alunos', ['alunos' => $lista]);
+            return view('aluno.listagem-alunos', ['alunos' => $lista, 'tipo' => $parametros]);
         } catch (\Exception $e) {
             dd($e);
         }
     }
 
-    public function filtrar_aluno_cpf(Request $request)
+    public function filtrar_aluno_cpf($tipo, Request $request)
     {
-        try {
-            $busca = trim($request->busca);
-            if ($busca === null || $busca === '') {
-                $lista = Aluno::all();
-                return view('aluno.listagem-alunos', ['alunos' => $lista]);
-            }
-            $busca = $this->verificaCpf($request->busca);
-            if ($busca) { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
-                $cpf = $this->limpaCPF_CNPJ($request->busca);
-                $aluno = Aluno::where('cpf', '=', $cpf)->get();
-                return view('aluno.listagem-alunos', ['alunos' => $aluno]);
+        $busca = trim($request->busca);
+        if ($busca === null || $busca === '') {
+            $aluno = Aluno::all();
+        } else if ($this->verificaCpf($busca)) { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
+            $cpf = $this->limpaCPF_CNPJ($busca);
+            if ($tipo != 'todos'){ // caso a listagem não seja do tipo todos, filtra baseado na categoria do plano
+                $aluno = Aluno::where('cpf', '=', $cpf)->whereHas('planos', function (Builder $query) use($tipo){
+                    $query->whereHas('categorias', function (Builder $categoria) use($tipo) {
+                        $categoria->where('tipo', 'like', $tipo);
+                    });
+                })->get();
             } else {
-                $aluno = Aluno::where('nome', 'like',  '%' . $request->busca . '%')->get();
-                return view('aluno.listagem-alunos', ['alunos' => $aluno]);
+                $aluno = Aluno::where('cpf', '=', $cpf)->get();
             }
-        } catch (\Exception $e) {
-            return 'dale2';
+        } else {
+            if ($tipo != 'todos'){ // caso a lisatagem não seja do tipo todos, filtra baseado na categoria do plano
+                $aluno = Aluno::where('nome', 'ilike',  '%' . $busca . '%')
+                    ->whereHas('planos', function (Builder $query) use($tipo){
+                        $query->whereHas('categorias', function (Builder $categoria) use($tipo) {
+                            $categoria->where('tipo', 'like', $tipo);
+                        });
+                })->get();
+            } else {
+                $aluno = Aluno::where('nome', 'ilike',  '%' . $busca . '%')->get();
+            }
         }
+        return view('aluno.listagem-alunos', ['alunos' => $aluno, 'tipo' => $tipo]);
     }
 
     function verificaCpf($cpf)
@@ -84,12 +93,8 @@ class AlunoController extends Controller
 
     function delete($id)
     {
-        try {
-            $aluno = Aluno::find($id);
-            $aluno->delete();
-            return back()->withStatus(__('Aluno deletado com sucesso!'));
-        } catch (\Exception $e) {
-            return 'dale2';
-        }
+        $aluno = Aluno::find($id);
+        $aluno->delete();
+        return back()->withStatus(__('Aluno deletado com sucesso!'));
     }
 }
