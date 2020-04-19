@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Aluno;
+use App\Plano;
 use Illuminate\Http\Request;
 use function foo\func;
 
@@ -16,11 +17,11 @@ class AlunoController extends Controller
             if ($parametros == "todos") {
                 $lista = Aluno::all();
             } else if ($parametros == "futvolei") {
-                $lista = Aluno::whereHas('planos', function(Builder $query){
+                $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '1');
                 })->get();
             } else if ($parametros == "funcional") {
-                $lista = Aluno::whereHas('planos', function(Builder $query){
+                $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '2');
                 })->get();
             }
@@ -37,9 +38,9 @@ class AlunoController extends Controller
             $aluno = Aluno::all();
         } else if ($this->verificaCpf($busca)) { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
             $cpf = $this->limpaCPF_CNPJ($busca);
-            if ($tipo != 'todos'){ // caso a listagem não seja do tipo todos, filtra baseado na categoria do plano
-                $aluno = Aluno::where('cpf', '=', $cpf)->whereHas('planos', function (Builder $query) use($tipo){
-                    $query->whereHas('categorias', function (Builder $categoria) use($tipo) {
+            if ($tipo != 'todos') { // caso a listagem não seja do tipo todos, filtra baseado na categoria do plano
+                $aluno = Aluno::where('cpf', '=', $cpf)->whereHas('planos', function (Builder $query) use ($tipo) {
+                    $query->whereHas('categorias', function (Builder $categoria) use ($tipo) {
                         $categoria->where('tipo', 'like', $tipo);
                     });
                 })->get();
@@ -47,13 +48,13 @@ class AlunoController extends Controller
                 $aluno = Aluno::where('cpf', '=', $cpf)->get();
             }
         } else {
-            if ($tipo != 'todos'){ // caso a lisatagem não seja do tipo todos, filtra baseado na categoria do plano
+            if ($tipo != 'todos') { // caso a lisatagem não seja do tipo todos, filtra baseado na categoria do plano
                 $aluno = Aluno::where('nome', 'ilike',  '%' . $busca . '%')
-                    ->whereHas('planos', function (Builder $query) use($tipo){
-                        $query->whereHas('categorias', function (Builder $categoria) use($tipo) {
+                    ->whereHas('planos', function (Builder $query) use ($tipo) {
+                        $query->whereHas('categorias', function (Builder $categoria) use ($tipo) {
                             $categoria->where('tipo', 'like', $tipo);
                         });
-                })->get();
+                    })->get();
             } else {
                 $aluno = Aluno::where('nome', 'ilike',  '%' . $busca . '%')->get();
             }
@@ -93,12 +94,20 @@ class AlunoController extends Controller
 
     public function destroy($tipo, $id)
     {
-        try{
+        try {
             $aluno = Aluno::find($id);
             $aluno->delete();
             return redirect()->route('listagem-alunos', $tipo)->withStatus(__('Aluno removido com sucesso'));
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->route('listagem-alunos', $tipo)->withErros(__('Erro ao deletar aluno'));
         }
+    }
+
+    public function criar_aluno()
+    {
+        $planos = Plano::all();
+        $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
+        $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
+        return view('aluno.cadastro-aluno', ['planos' => $planos, 'funcionais' => $planos_funcional, 'futvolei' => $planos_futvolei]);
     }
 }

@@ -29,13 +29,11 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name('listagem-alunos');
 Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
 Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
+Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-aluno');
 
 // rotas de plano
 Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-plano');
 Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
-Route::get('/cadastro-aluno', function () {
-	return view('aluno.cadastro-aluno');
-})->name('cadastro-aluno');
 
 
 //
