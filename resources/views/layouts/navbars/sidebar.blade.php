@@ -64,6 +64,12 @@
           <span class="sidebar-normal">{{ __('Planos') }} </span>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'listagem-aluguel' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('listagem-aluguel') }}">
+          <i class=" material-icons">folder_open</i>
+          <span class="sidebar-normal">{{ __('Aluguel de quadra') }} </span>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

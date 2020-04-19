@@ -34,6 +34,10 @@ Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-alu
 // rotas de plano
 Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-plano');
 Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
+// rotas de aluguel de quadra
+Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
+Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
+Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
 
 
 //
