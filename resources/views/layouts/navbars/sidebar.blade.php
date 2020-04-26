@@ -58,8 +58,8 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item{{ $activePage == 'listagem-plano' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('listagem-plano') }}">
+      <li class="nav-item{{ $activePage == 'listagem-planos' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('listagem-planos') }}">
           <i class=" material-icons">folder_open</i>
           <span class="sidebar-normal">{{ __('Planos') }} </span>
         </a>

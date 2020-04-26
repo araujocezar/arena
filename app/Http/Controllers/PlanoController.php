@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Validators\PlanoValidator;
 use Illuminate\Http\Request;
 use App\Plano;
 
@@ -13,12 +14,35 @@ class PlanoController extends Controller
     {
         $lista = Plano::all();
         $categorias = Categoria::all();
-        return view('plano.listagem-plano', ['planos' => $lista, 'categorias' => $categorias]);
+        return view('plano.listagem-planos', ['planos' => $lista, 'categorias' => $categorias]);
     }
 
-    public function criar_plano()
+    public function save(Request $request)
     {
+        PlanoValidator::validate($request->all());
+        $plano = new Plano();
+        $plano->fill($request->all());
+        $plano->save();
+        $lista = Plano::all();
         $categorias = Categoria::all();
-        return view('plano.criar-plano', ['categorias' => $categorias]);
+        return redirect()->route('listagem-planos', ['planos' => $lista, 'categorias' => $categorias]);
+    }
+
+    public function edit($id){
+        $plano = Plano::find($id);
+        $categorias = Categoria::all();
+        return view('plano.edit', ['plano' => $plano, 'categorias' => $categorias]);
+
+    }
+
+    public function destroy($id)
+    {
+        try{
+            $plano = Plano::find($id);
+            $plano->delete();
+            return redirect()->route('listagem-planos')->withStatus(__('Plano removido com sucesso'));
+        }catch (\Exception $e){
+            return redirect()->route('listagem-planos')->withErros(__('Erro ao deletar plano'));
+        }
     }
 }
