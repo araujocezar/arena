@@ -10,27 +10,29 @@
                         <h4 class="card-title ">Cadastro de Aluno</h4>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form action="{{ route('aluno.save') }}" method="post" autocomplete="off" class="form-horizontal" enctype="multipart/form-data">
+                            @csrf
+                            @method('post')
                             <div style="padding: 48px;">
                                 <div class="form-column">
                                     <div class="form-row">
                                         <div class="col-5">
                                             <label for="nome">Nome</label>
-                                            <input type="text" id="nome" class="form-control">
+                                            <input type="text" id="nome" name="nome" class="form-control">
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
-                                            <input type="text" id="cpf" class="form-control">
+                                            <input type="text" id="cpf" name="cpf" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5" style="margin-top: 6px;">
                                             <label for="email">Email</label>
-                                            <input type="text" id="email" class="form-control">
+                                            <input type="text" id="email" name="email" class="form-control">
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
-                                            <select class="form-control" id="sexo">
+                                            <select class="form-control" id="sexo" name="sexo">
                                                 <option>Feminino</option>
                                                 <option>Masculino</option>
                                             </select>
@@ -39,16 +41,16 @@
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5">
                                             <label for="telefone">Telefone</label>
-                                            <input type="text" id="telefone" class="form-control">
+                                            <input type="text" id="telefone" name="telefone" class="form-control">
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="data_cadastro">Data:</label>
-                                            <input type="text" id="data_cadastro" class="form-control">
+                                            <input type="text" id="data_cadastro" name="data_cadastro" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+
                         <div class="content">
                             <div class="card-header">
                                 <h4><strong>Selecione o plano</strong></h4>
@@ -143,6 +145,7 @@
                         <div class="col-sm-4 col-md-11">
                             <button type="submit" class="btn btn-primary pull-right" style="width: 140px;">SALVAR</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
