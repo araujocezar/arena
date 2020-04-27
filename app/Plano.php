@@ -8,8 +8,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Plano extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['dias_semana', 'preco', 'categoria_id'];
+    protected $fillable = ['descricao', 'dias_semana', 'categoria_id', 'preco'];
+    public static $rules = [
+        'descricao' => 'required',
+        'preco' => 'required'
+    ];
 
+    public static $messages = [
+        'required'=> 'o campo: attribute é obrigatorio',
+
+    ];
     public function alunos()
     {
         return $this->belongsToMany(Aluno::class);

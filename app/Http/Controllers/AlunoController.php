@@ -110,4 +110,15 @@ class AlunoController extends Controller
         $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
         return view('aluno.cadastro-aluno', ['planos' => $planos, 'funcionais' => $planos_funcional, 'futvolei' => $planos_futvolei]);
     }
+
+    public function save(Request $request)
+    {
+            $aluno = new Aluno();
+            $aluno->fill($request->all());
+            $aluno->data_expiracao = now();
+            $aluno->data_cadastro = now();
+            $aluno->save();
+            return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+    }
+
 }

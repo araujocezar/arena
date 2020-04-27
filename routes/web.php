@@ -30,15 +30,19 @@ Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name
 Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
 Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
 Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-aluno');
+Route::post('/cadastro-aluno/save', 'AlunoController@save')->name('aluno.save');
 
 // rotas de plano
-Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-plano');
+Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-planos');
 Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
+Route::delete('/remover/planos/{id}', 'PlanoController@destroy')->name('plano.destroy');
+Route::get('/editar/planos/{id}', 'PlanoController@edit')->name('plano.edit');
+Route::post('/cadastro-plano', 'PlanoController@save')->name('plano.save');
+
 // rotas de aluguel de quadra
 Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
 Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
 Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
-
 
 //
 Route::get('/inicio', function () {
