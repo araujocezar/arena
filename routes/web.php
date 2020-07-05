@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	if (auth()->guest()) {
-		return redirect()->route('login');
-	} else {
-		return redirect()->route('profile');
-	}
+    if (auth()->guest()) {
+        return redirect()->route('login');
+    } else {
+        return redirect()->route('inicio', ['activePage' => 'inicio']);
+    }
 });
 
 Auth::routes();
@@ -44,24 +44,26 @@ Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('lista
 Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
 Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
 
-//
-Route::get('/inicio', function () {
-	return view('aluno.inicio');
-})->name('inicio');
-Route::group(['middleware' => 'auth'], function () {
+// Rotas de relatorio
 
-	Route::get('table-list', function () {
-		return view('pages.table_list');
-	})->name('table');
+Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index');
+
+//Rotas de tela inicial
+Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
+Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('table-list', function () {
+        return view('pages.table_list');
+    })->name('table');
 });
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('user', 'UserController', ['except' => ['show']]);
-	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
-	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+    Route::resource('user', 'UserController', ['except' => ['show']]);
+    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+    Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+    Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
-
 
 Auth::routes();
 
