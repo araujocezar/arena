@@ -46,7 +46,7 @@
                                             {{ $plano->preco }}
                                         </td>
                                         <td>
-                                            {{ $plano->categorias->tipo }}
+                                            {{ $plano->categoria()->tipo }}
                                         </td>
                                         <td class="td-actions text-right">
                                             <form action="{{ route('plano.destroy', $plano->id) }}" method="post">

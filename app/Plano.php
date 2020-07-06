@@ -11,24 +11,25 @@ class Plano extends Model
     protected $fillable = ['descricao', 'dias_semana', 'categoria_id', 'preco'];
     public static $rules = [
         'descricao' => 'required',
-        'preco' => 'required'
+        'preco' => 'required',
     ];
 
     public static $messages = [
-        'required'=> 'o campo: attribute é obrigatorio',
-
+        'required' => 'o campo: attribute é obrigatorio',
     ];
+
     public function alunos()
     {
         return $this->belongsToMany(Aluno::class);
     }
+
     public function alunoplanos()
     {
         return $this->hasMany('App\Alunoplano');
     }
 
-    public function categorias()
+    public function categoria()
     {
-        return $this->belongsTo('App\Categoria', 'categoria_id');
+        return Categoria::firstWhere('id', $this->categoria_id);
     }
 }

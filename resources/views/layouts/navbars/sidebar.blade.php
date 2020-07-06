@@ -70,6 +70,12 @@
           <span class="sidebar-normal">{{ __('Aluguel de quadra') }} </span>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'relatorios' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('relatorios.index') }}">
+          <i class=" material-icons">poll</i>
+          <span class="sidebar-normal">{{ __('Relatorios') }} </span>
+        </a>
+      </li>
     </ul>
   </div>
 </div>
