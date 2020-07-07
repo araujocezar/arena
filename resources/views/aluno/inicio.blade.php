@@ -22,8 +22,7 @@
                             <div class="row">
                                 <div class="col">
                                     <span class="bmd-form-group">
-                                        <input name="cpfAluno" type="text" class="form-control"
-                                            placeholder="Insira o cpf do aluno" value="">
+                                        <input name="cpfAluno" type="text" class="form-control" placeholder="Insira o cpf do aluno" value="">
                                     </span>
                                 </div>
                                 <div class="col-md-auto">
@@ -52,13 +51,15 @@
                         </div>
                         <br>
                         <label for="">Planos Ativos </label>
-                        <form>
+                        <form action="{{ route('registrarPresenca') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="aluno_id" value="{{ $aluno->id }}">
                             <table class="table">
                                 <tbody>
                                     @foreach($planos as $plano)
                                     <tr>
                                         <td>
-                                            <input type="radio" style="zoom: 200%;" name="plano" value="{{ $plano->id }}">
+                                            <input type="radio" style="zoom: 200%;" name="plano_id" value="{{ $plano->id }}">
                                         </td>
                                         <td>
                                             <div class="col-lg-auto">
@@ -72,8 +73,8 @@
                                                                 <span style="margin-right: 10em;">
                                                                     {{ $plano->dias_semana }} dia(s) por semana
                                                                 </span>
-                                                                <span class="{{ $plano->dias_semana > 0 ? 'text-success' : 'text-danger' }}">
-                                                                    {{ $plano->dias_semana }} dia(s) restante(s) esta semana
+                                                                <span class="{{ ($plano->dias_semana - $presencas[$plano->id]) > 0 ? 'text-success' : 'text-danger' }}">
+                                                                    {{ $plano->dias_semana - $presencas[$plano->id] }} dia(s) restante(s) esta semana
                                                                 </span>
                                                             </p>
                                                         </h3>
