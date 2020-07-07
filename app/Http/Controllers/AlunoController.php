@@ -49,22 +49,34 @@ class AlunoController extends Controller
 
     private function pegarPresencasAluno($alunoId, $planos)
     {
-        $ultimoDomingo = new Carbon();
+        $ultimoDomingo = $this->pegarUltimoDomingo();
         $hoje = new Carbon();
+        $presencasPorPlano = $this->pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje);
 
-        while ($ultimoDomingo->dayOfWeek != 0) {
-            $ultimoDomingo->subDay();
-        }
+        return $presencasPorPlano;
+    }
 
+    private function pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje)
+    {
         $presencasPorPlano = [];
         foreach ($planos as $plano) {
-            $presencasPorPlano[$plano->id] = PresencaAluno::where('created_at', '>=', $ultimoDomingo)
-                                                          ->where('created_at', '<=', $hoje)
+            $presencasPorPlano[$plano->id] = PresencaAluno::whereBetween('created_at', [$ultimoDomingo, $hoje])
                                                           ->where('plano_id', $plano->id)
                                                           ->where('aluno_id', $alunoId)->count();
         }
 
         return $presencasPorPlano;
+    }
+
+    private function pegarUltimoDomingo()
+    {
+        $ultimoDomingo = new Carbon();
+
+        while ($ultimoDomingo->dayOfWeek != 0) {
+            $ultimoDomingo->subDay();
+        }
+
+        return $ultimoDomingo;
     }
 
     public function registrarPresenca(Request $request)
