@@ -51,6 +51,7 @@ Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index')
 //Rotas de tela inicial
 Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
 Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
+Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('table-list', function () {

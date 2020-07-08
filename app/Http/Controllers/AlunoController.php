@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Database\Eloquent\Builder;
 use App\Aluno;
 use App\Plano;
+use App\PresencaAluno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class AlunoController extends Controller
 {
@@ -18,17 +20,85 @@ class AlunoController extends Controller
     public function buscarAluno(Request $request)
     {
         $aluno = Aluno::firstWhere('cpf', $request->cpfAluno);
+
         if ($aluno) {
-            $alunoPlano = DB::select('select * from aluno_plano where aluno_id = ?', [$aluno->id]);
-            $planos = [];
-            foreach ($alunoPlano as $plano) {
-                $planos[] = Plano::firstWhere('id', $plano->id);
-            }
+            $planos = $this->pegarPlanos($aluno->id);
+            $dados = [
+                'aluno' => $aluno,
+                'planos' => $planos,
+                'presencas' => $this->pegarPresencasAluno($aluno->id, $planos),
+            ];
+            $response = view('aluno.inicio', $dados);
         } else {
-            return back()->with('erro', 'Aluno não Encontrado, insira um CPF valido!');
+            $response = back()->with('erro', 'Aluno não Encontrado, insira um CPF valido!');
         }
 
-        return view('aluno.inicio', ['aluno' => $aluno, 'planos' => $planos]);
+        return $response;
+    }
+
+    private function pegarPlanos($idAluno)
+    {
+        $alunoPlano = DB::select('select * from aluno_plano where aluno_id = ?', [$idAluno]);
+        $planos = [];
+        foreach ($alunoPlano as $plano) {
+            $planos[] = Plano::firstWhere('id', $plano->id);
+        }
+
+        return $planos;
+    }
+
+    private function pegarPresencasAluno($alunoId, $planos)
+    {
+        $ultimoDomingo = $this->pegarUltimoDomingo();
+        $hoje = new Carbon();
+        $presencasPorPlano = $this->pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje);
+
+        return $presencasPorPlano;
+    }
+
+    private function pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje)
+    {
+        $presencasPorPlano = [];
+        foreach ($planos as $plano) {
+            $presencasPorPlano[$plano->id] = PresencaAluno::whereBetween('created_at', [$ultimoDomingo, $hoje])
+                                                          ->where('plano_id', $plano->id)
+                                                          ->where('aluno_id', $alunoId)->count();
+        }
+
+        return $presencasPorPlano;
+    }
+
+    private function pegarUltimoDomingo()
+    {
+        $ultimoDomingo = new Carbon();
+
+        while ($ultimoDomingo->dayOfWeek != 0) {
+            $ultimoDomingo->subDay();
+        }
+
+        return $ultimoDomingo;
+    }
+
+    public function registrarPresenca(Request $request)
+    {
+        $dados = $request->all();
+        $plano = Plano::firstWhere('id', $dados['plano_id']);
+        $presencasAluno = $this->pegarPresencasAluno($dados['aluno_id'], [$plano]);
+
+        if (isset($dados['plano_id'])) {
+            if ($presencasAluno[$plano->id] < $plano->dias_semana) {
+                PresencaAluno::create($dados);
+                $response = redirect()->route('inicio')->with('sucesso', 'Presenca registrada');
+            } else {
+                $aluno = Aluno::firstWhere('id', $dados['aluno_id']);
+                $categoria = $plano->categoria();
+                $response = redirect()->route('inicio')->with('erro', "$aluno->nome já atingiu o limite semanal para o plano $categoria->tipo");
+            }
+        } else {
+            $response = back()->with('erro', 'Selecione o Plano!!!');
+        }
+
+        return $response;
     }
 
     public function listarAlunos($parametros)

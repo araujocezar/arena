@@ -6,8 +6,6 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
     public function run()
     {
@@ -17,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call([PlanoSeeder::class]);
         $this->call([AlunoplanoSeeder::class]);
         $this->call([AluguelSeeder::class]);
+        $this->call([PresencaAlunoSeeder::class]);
     }
 }
