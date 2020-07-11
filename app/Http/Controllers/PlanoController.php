@@ -6,7 +6,7 @@ use App\Categoria;
 use App\Validators\PlanoValidator;
 use Illuminate\Http\Request;
 use App\Plano;
-
+use Laravel\Ui\Presets\React;
 
 class PlanoController extends Controller
 {
@@ -23,9 +23,8 @@ class PlanoController extends Controller
         $plano = new Plano();
         $plano->fill($request->all());
         $plano->save();
-        $lista = Plano::all();
-        $categorias = Categoria::all();
-        return redirect()->route('listagem-planos', ['planos' => $lista, 'categorias' => $categorias]);
+        
+        return redirect()->route('listagem-planos');
     }
 
     public function edit($id){
@@ -33,6 +32,20 @@ class PlanoController extends Controller
         $categorias = Categoria::all();
         return view('plano.edit', ['plano' => $plano, 'categorias' => $categorias]);
 
+    }
+
+    public function atualizar(Request $request, $id){
+
+        $plano = Plano::find($id);
+        
+        if(isset($plano)){
+            $plano->update($request->all());
+            $response = redirect()->route('listagem-planos')->with('sucesso', 'Plano Atualizado!!!');
+        } else {
+            $response = redirect()->route('listagem-planos')->with('erro', 'Falha ao atualizar!!!');
+        }
+
+        return $response;
     }
 
     public function destroy($id)

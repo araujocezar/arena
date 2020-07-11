@@ -38,6 +38,7 @@ Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-pla
 Route::delete('/remover/planos/{id}', 'PlanoController@destroy')->name('plano.destroy');
 Route::get('/editar/planos/{id}', 'PlanoController@edit')->name('plano.edit');
 Route::post('/cadastro-plano', 'PlanoController@save')->name('plano.save');
+Route::put('/update-plano/{id}', 'PlanoController@atualizar')->name('plano.atualizar');
 
 // rotas de aluguel de quadra
 Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
