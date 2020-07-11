@@ -53,6 +53,9 @@ Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index')
 Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
 Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
 Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
+//Rotas presenca aluno
+Route::delete('/presenca/{id}', 'AlunoController@deletarPresenca')->name('presenca.delete');
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('table-list', function () {
