@@ -9,7 +9,7 @@
                     <div class="card-header card-header-primary">
                         <h4 class="card-title ">Inicio</h4>
                     </div>
-                    <div class="card-body" style="min-height: 30em;">
+                    <div class="card-body" style="min-height: 35em;">
     
                         @if(session('erro'))
                         <div class="alert alert-danger">{{ session('erro') }}</div>
@@ -92,6 +92,39 @@
                         </form>
                         @endif
                         <br>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">Registro de presenças Hoje</h4>
+                    </div>
+                    <div class="card-body" style="min-height: 30em;">
+                        <table class="table">
+                            <thead>
+                                <th>Plano / Categoria</th>
+                                <th>Aluno</th>
+                                <th>Entrada em</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                @foreach($presencasHoje as $presenca)
+                                    <tr>
+                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria()->tipo }}</td>
+                                        <td>{{ $presenca->aluno()->nome }}</td>
+                                        <td>{{ $presenca->created_at->format('h:i:s d-m-Y') }}</td>
+                                        <td>
+                                            <form action="{{ route('presenca.delete', $presenca->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-link btn-danger" onclick="return confirm('Você tem certeza?')">
+                                                    <i class=" material-icons">delete</i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
