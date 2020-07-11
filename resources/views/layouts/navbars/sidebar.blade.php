@@ -30,7 +30,7 @@
       </li>
       <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
         <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="false">
-          <i class="material-icons" style="color:black;">folder_open</i>
+          <i class="material-icons" style="color:black;">group</i>
           <p>{{ __('Alunos') }}
             <b class="caret"></b>
           </p>
@@ -39,19 +39,19 @@
           <ul class="nav">
             <li class="nav-item{{ $activePage == 'listagem-alunos' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('listagem-alunos', 'todos') }}">
-                <i class=" material-icons">person</i>
+                <i class=" material-icons">group</i>
                 <span class="sidebar-normal">{{ __('Todos') }} </span>
               </a>
             </li>
             <li class="nav-item{{ $activePage == 'listagem-funcional' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('listagem-alunos', 'funcional') }}">
-                <i class=" material-icons">person</i>
+                <i class=" material-icons">sports_handball</i>
                 <span class="sidebar-normal">{{ __('Funcional') }} </span>
               </a>
             </li>
             <li class="nav-item{{ $activePage == 'listagem-futvolei' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('listagem-alunos', 'futvolei') }}">
-                <i class=" material-icons">person</i>
+                <i class=" material-icons">sports_soccer</i>
                 <span class="sidebar-normal">{{ __('Futvôlei') }} </span>
               </a>
             </li>
@@ -60,7 +60,7 @@
       </li>
       <li class="nav-item{{ $activePage == 'listagem-planos' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('listagem-planos') }}">
-          <i class=" material-icons">folder_open</i>
+          <i class=" material-icons">store</i>
           <span class="sidebar-normal">{{ __('Planos') }} </span>
         </a>
       </li>
