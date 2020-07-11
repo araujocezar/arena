@@ -14,7 +14,7 @@ class AlunoController extends Controller
 {
     public function inicio()
     {
-        return view('aluno.inicio');
+        return view('aluno.inicio', ['presencasHoje' => $this->pegarPresencasHoje()]);
     }
 
     public function buscarAluno(Request $request)
@@ -27,6 +27,7 @@ class AlunoController extends Controller
                 'aluno' => $aluno,
                 'planos' => $planos,
                 'presencas' => $this->pegarPresencasAluno($aluno->id, $planos),
+                'presencasHoje' => $this->pegarPresencasHoje(),
             ];
             $response = view('aluno.inicio', $dados);
         } else {
@@ -36,14 +37,25 @@ class AlunoController extends Controller
         return $response;
     }
 
+    public function pegarPresencasHoje()
+    {
+        return PresencaAluno::whereYear('created_at', date('Y'))
+                            ->whereMonth('created_at', date('m'))
+                            ->whereDay('created_at', date('d'))
+                            ->get();
+    }
+
     private function pegarPlanos($idAluno)
     {
         $alunoPlano = DB::select('select * from aluno_plano where aluno_id = ?', [$idAluno]);
         $planos = [];
         foreach ($alunoPlano as $plano) {
-            $planos[] = Plano::firstWhere('id', $plano->id);
+            $p = Plano::firstWhere('id', $plano->id);
+            if(isset($p)){
+                $planos[] = $p;
+            }
         }
-
+        
         return $planos;
     }
 
@@ -217,5 +229,15 @@ class AlunoController extends Controller
         $aluno->save();
 
         return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+    }
+
+    public function deletarPresenca($id)
+    {
+        $presenca = PresencaAluno::firstWhere('id', $id);
+        $nome = $presenca->aluno()->nome;
+        $msg = "Presenca de $nome deletada!!!";
+        $presenca->delete();
+
+        return redirect()->route('inicio')->with('sucesso', $msg);
     }
 }

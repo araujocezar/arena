@@ -38,6 +38,7 @@ Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-pla
 Route::delete('/remover/planos/{id}', 'PlanoController@destroy')->name('plano.destroy');
 Route::get('/editar/planos/{id}', 'PlanoController@edit')->name('plano.edit');
 Route::post('/cadastro-plano', 'PlanoController@save')->name('plano.save');
+Route::put('/update-plano/{id}', 'PlanoController@atualizar')->name('plano.atualizar');
 
 // rotas de aluguel de quadra
 Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
@@ -52,6 +53,9 @@ Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index')
 Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
 Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
 Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
+//Rotas presenca aluno
+Route::delete('/presenca/{id}', 'AlunoController@deletarPresenca')->name('presenca.delete');
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('table-list', function () {
