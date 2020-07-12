@@ -1,6 +1,7 @@
 @extends('layouts.app', ['activePage' => 'cadastro-aluno', 'titlePage' => __('Cadastro de Aluno')])
 
 @section('content')
+<body>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -22,7 +23,10 @@
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
-                                            <input type="text" id="cpf" name="cpf" class="form-control">
+                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf">
+                                            <script type="text/javascript">
+                                                $('#cpfmask').mask('000.000.000-00');
+                                            </script>
                                         </div>
                                     </div>
                                     <div class="form-row" style="margin-top: 12px;">
@@ -41,11 +45,20 @@
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5">
                                             <label for="telefone">Telefone</label>
-                                            <input type="text" id="telefone" name="telefone" class="form-control">
+                                            <input type="text" id="telefonemask" name="telefone" class="form-control" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}" >
+                                            <script type="text/javascript">
+                                                $('#telefonemask').mask('(00) 0000-00009');
+                                            </script>
                                         </div>
-                                        <div class="col-5" style="margin-left: 48px;">
-                                            <label for="data_cadastro">Data:</label>
-                                            <input type="text" id="data_cadastro" name="data_cadastro" class="form-control">
+                                        <div class="col-5" style="margin-left: 40px;"><div class="container">
+                                            <label for="telefone">Data do Cadastro</label>
+                                            <input class="form-control" id="datepicker" type="text">
+                                        </div>
+                                        <script type="text/javascript">
+                                            $('#datepicker').datepicker({  
+                                            format: 'mm-dd-yyyy',
+                                            });  
+                                        </script> 
                                         </div>
                                     </div>
                                 </div>
@@ -68,6 +81,7 @@
                             </div>
                             <div class="card-header row">
                                 <div class="col-sm card">
+                                    
                                     @foreach ($funcionais as $func)
                                     <div class="container-radio column">
                                         <div>
@@ -91,6 +105,14 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                            <!-- nao ta dropando -->
+                                        <div class="col-sm">
+                                            <label for="dale">Forma de Pagamento:</label>
+                                            <select class="form-control" id="pagamento" name="pagamento">
+                                                <option>cartao</option>
+                                                <option>a vista 15% de desconto</option>
+                                            </select>
+                                        </div>
                                 </div>
                                 <div class="col-sm card">
                                     @foreach ($futvolei as $fut)
@@ -116,6 +138,14 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                    <!-- ta fazendo o drop mas ta sem back -->
+                                       <div class="col-sm">
+                                            <label for="dale">Forma de Pagamento:</label>
+                                            <select class="form-control" id="pagamento" name="pagamento">
+                                                <option>cartao</option>
+                                                <option>a vista 15% de desconto</option>
+                                            </select>
+                                        </div>
                                 </div>
                                 <div class="col-sm card">
                                     <div class="container-radio column">
@@ -151,7 +181,9 @@
             </div>
         </div>
     </div>
+
 </div>
+</body>
 @endsection
 
 <style>
