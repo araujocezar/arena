@@ -94,10 +94,11 @@ class AlunoController extends Controller
     public function registrarPresenca(Request $request)
     {
         $dados = $request->all();
-        $plano = Plano::firstWhere('id', $dados['plano_id']);
-        $presencasAluno = $this->pegarPresencasAluno($dados['aluno_id'], [$plano]);
 
         if (isset($dados['plano_id'])) {
+            $plano = Plano::firstWhere('id', $dados['plano_id']);
+            $presencasAluno = $this->pegarPresencasAluno($dados['aluno_id'], [$plano]);
+
             if ($presencasAluno[$plano->id] < $plano->dias_semana) {
                 PresencaAluno::create($dados);
                 $response = redirect()->route('inicio')->with('sucesso', 'Presenca registrada');
