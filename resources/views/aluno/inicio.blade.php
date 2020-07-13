@@ -22,7 +22,10 @@
                             <div class="row">
                                 <div class="col">
                                     <span class="bmd-form-group">
-                                        <input name="cpfAluno" type="text" class="form-control" placeholder="Insira o cpf do aluno" value="">
+                                        <input name="cpfAluno" type="text" class="form-control" id="cpfmask" placeholder="Insira o cpf do aluno" value="">
+                                        <script type="text/javascript">
+                                                $('#cpfmask').mask('000.000.000-00');
+                                        </script>
                                     </span>
                                 </div>
                                 <div class="col-md-auto">
