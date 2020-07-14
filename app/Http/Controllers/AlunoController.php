@@ -13,6 +13,8 @@ use Illuminate\Database\QueryException;
 
 class AlunoController extends Controller
 {
+    protected $limite_pagina = 10;
+
     public function inicio()
     {
         return view('aluno.inicio', ['presencasHoje' => $this->pegarPresencasHoje()]);
@@ -121,16 +123,16 @@ class AlunoController extends Controller
             $lista = [];
             $activePage = 'listagem-alunos';
             if ($parametros == 'todos') {
-                $lista = Aluno::all();
+                $lista = Aluno::paginate($this->limite_pagina);
             } elseif ($parametros == 'futvolei') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '1');
-                })->get();
+                })->paginate($this->limite_pagina);
                 $activePage = 'listagem-futvolei';
             } elseif ($parametros == 'funcional') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '2');
-                })->get();
+                })->paginate($this->limite_pagina);
                 $activePage = 'listagem-funcional';
             }
 

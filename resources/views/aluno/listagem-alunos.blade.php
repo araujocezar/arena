@@ -86,11 +86,11 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $alunos->links() }}
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
