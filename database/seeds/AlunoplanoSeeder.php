@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AlunoplanoSeeder extends Seeder
 {
@@ -12,7 +13,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '1',
             'plano_id' => '1',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -20,7 +20,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '1',
             'plano_id' => '2',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -28,7 +27,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '2',
             'plano_id' => '1',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -36,7 +34,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '2',
             'plano_id' => '5',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -44,7 +41,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '2',
             'plano_id' => '5',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -52,7 +48,6 @@ class AlunoplanoSeeder extends Seeder
         DB::table('aluno_plano')->insert([
             'aluno_id' => '2',
             'plano_id' => '3',
-            'dias_restantes' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
