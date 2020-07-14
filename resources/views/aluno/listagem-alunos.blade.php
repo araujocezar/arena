@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'listagem-alunos', 'titlePage' => __('Listagem dos Alunos')])
+@extends('layouts.app', ['activePage' => $activePage, 'titlePage' => __('Listagem dos Alunos')])
 
 @section('content')
 <div class="content">
@@ -27,7 +27,7 @@
                             @csrf
                             <div class="row">
                                 <div class="col">
-                                    <input name="busca" id="busca" type="text" class="form-control" placeholder="Buscar por Nome ou CPF" value={{ old('busca')}}> {{ $errors->first('busca')}}
+                                    <input name="busca" id="busca" type="text" class="form-control" placeholder="Buscar por Nome ou CPF" value="{{ old('busca')}}"> {{ $errors->first('busca')}}
                                 </div>
                                 <div class="col-md-auto">
                                     <button type="submit" class="btn btn-primary">
@@ -51,6 +51,7 @@
                                     <th>
                                         Data de Pagamento
                                     </th>
+                                    <th></th>
                                 </thead>
                                 <tbody>
                                     @foreach($alunos as $aluno)

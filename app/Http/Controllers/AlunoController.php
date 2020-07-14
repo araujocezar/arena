@@ -118,19 +118,22 @@ class AlunoController extends Controller
     {
         try {
             $lista = [];
+            $activePage = 'listagem-alunos';
             if ($parametros == 'todos') {
                 $lista = Aluno::all();
             } elseif ($parametros == 'futvolei') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '1');
                 })->get();
+                $activePage = 'listagem-futvolei';
             } elseif ($parametros == 'funcional') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '2');
                 })->get();
+                $activePage = 'listagem-funcional';
             }
 
-            return view('aluno.listagem-alunos', ['alunos' => $lista, 'tipo' => $parametros]);
+            return view('aluno.listagem-alunos', ['alunos' => $lista, 'tipo' => $parametros, 'activePage' => $activePage]);
         } catch (\Exception $e) {
             dd($e);
         }
