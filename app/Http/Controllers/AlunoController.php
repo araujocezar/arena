@@ -223,22 +223,30 @@ class AlunoController extends Controller
 
     public function save(Request $request)
     {
-        $aluno = new Aluno();
-        $aluno->fill($request->all());
-        $aluno->data_expiracao = now();
-        $aluno->data_cadastro = now();
-        $aluno->save();
+        $dados = $request->all();
 
-        return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+        if(isset($dados['plano_id'])){
+            $aluno = new Aluno();
+            $aluno->fill($dados);
+            $aluno->data_expiracao = now();
+            $aluno->data_cadastro = now();
+            $aluno->save();
+            
+            DB::table('aluno_plano')->insert( ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id'], ]);
+
+            $response = redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+        } else {
+            $response = back()->withInput()->with('erro', 'Informe o plano!!!');
+        }
+        
+        return $response;
     }
 
     public function deletarPresenca($id)
     {
         $presenca = PresencaAluno::firstWhere('id', $id);
-        $nome = $presenca->aluno()->nome;
-        $msg = "Presenca de $nome deletada!!!";
         $presenca->delete();
 
-        return redirect()->route('inicio')->with('sucesso', $msg);
+        return redirect()->route('inicio')->with('sucesso', "Presenca deletada!!!");
     }
 }
