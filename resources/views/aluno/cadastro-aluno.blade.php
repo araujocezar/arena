@@ -50,8 +50,13 @@
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
                                             <select class="form-control" id="sexo" name="sexo">
+                                                @if (isset($aluno))
                                                 <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
                                                 <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
+                                                @else
+                                                <option>Feminino</option>
+                                                <option>Masculino</option>
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
@@ -67,7 +72,7 @@
                                         <div class="col-5" style="margin-left: 40px;"><div class="container">
                                             <label for="data_cadastro">Data do Cadastro</label>
                                             <input class="form-control" id="datepicker" type="text" name='data_cadastro'
-                                                   value="{{ $aluno->data_cadastro->format('d-m-Y') ?? '' }}" required>
+                                                   value="{{ $aluno->data_cadastro ?? '' }}" required>
                                         </div>
                                         <script type="text/javascript">
                                             $('#datepicker').datepicker({  
@@ -115,8 +120,12 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
+                                                @if(isset($alunoPlanos))
                                                 <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" 
                                                 {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
+                                                @else
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" />
+                                                @endif    
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading" style="color:black"><strong>{{$func->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -165,8 +174,12 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $fut->id }}"
-                                                {{ in_array($fut->id, $alunoPlanos) ? 'checked' : ''}}/>
+                                                @if(isset($alunoPlanos))
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" 
+                                                {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
+                                                @else
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" />
+                                                @endif 
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
                                                     <div class="panel-body column">
