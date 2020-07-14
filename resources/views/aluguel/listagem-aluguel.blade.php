@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'listagem-aluguel', 'titlePage' => __('Listagem de alugueis')])
+@extends('layouts.app', ['activePage' => 'listagem-aluguel', 'titlePage' => __('Listagem de alugueis de quadras')])
 
 @section('content')
 <div class="content">
@@ -84,7 +84,7 @@
                                             {{ $aluguel->turno }}
                                         </td>
                                         <td>
-                                            {{ $aluguel->valor }}
+                                            R$ {{ $aluguel->valor }}
                                         </td>
                                         <td class="td-actions text-right">
                                             <form action="{{ route('aluguel.destroy', $aluguel->id)}}" method="post">
