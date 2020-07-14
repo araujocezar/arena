@@ -113,8 +113,8 @@
                                 @foreach($presencasHoje as $presenca)
                                     <tr>
                                         <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria()->tipo }}</td>
-                                        <td>{{ $presenca->aluno()->nome }}</td>
-                                        <td>{{ $presenca->created_at->format('h:i:s d-m-Y') }}</td>
+                                        <td>{{ $presenca->aluno()->nome ?? '' }}</td>
+                                        <td>{{ $presenca->created_at->format('H:i:s d-m-Y') }}</td>
                                         <td>
                                             <form action="{{ route('presenca.delete', $presenca->id) }}" method="post">
                                                 @csrf
