@@ -69,7 +69,7 @@
                                                 <div class="card card-stats">
                                                     <div class="card-header">
                                                         <div class="card-icon">
-                                                            <b>{{ strtoupper($plano->categoria()->tipo) }}</b>
+                                                            <b>{{ strtoupper($plano->categoria->tipo) }}</b>
                                                         </div>
                                                         <h5 class="card-title">
                                                             <p>
@@ -112,7 +112,7 @@
                             <tbody>
                                 @foreach($presencasHoje as $presenca)
                                     <tr>
-                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria()->tipo }}</td>
+                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria->tipo }}</td>
                                         <td>{{ $presenca->aluno()->nome ?? '' }}</td>
                                         <td>{{ $presenca->created_at->format('H:i:s d-m-Y') }}</td>
                                         <td>

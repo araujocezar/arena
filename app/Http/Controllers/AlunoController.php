@@ -143,29 +143,26 @@ class AlunoController extends Controller
     public function filtrar_aluno_cpf($tipo, Request $request)
     {
         $busca = trim($request->busca);
+        
         if ($busca === null || $busca === '') {
             $aluno = Aluno::all();
-        } elseif ($this->verificaCpf($busca)) { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
-            $cpf = $this->limpaCPF_CNPJ($busca);
+        } else { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
+            if(is_numeric($busca) && strlen($busca) == 11) {
+                $busca = substr($busca, 0, 3) . '.' . substr($busca, 3, 3) . '.' . substr($busca, 6, 3) . '-' . substr($busca, 9, 2);
+            }    
             if ($tipo != 'todos') { // caso a listagem não seja do tipo todos, filtra baseado na categoria do plano
-                $aluno = Aluno::where('cpf', '=', $cpf)->whereHas('planos', function (Builder $query) use ($tipo) {
-                    $query->whereHas('categorias', function (Builder $categoria) use ($tipo) {
+                $aluno = Aluno::where('cpf', '=', $busca)
+                ->orWhere('nome', 'ilike', '%'.$busca.'%')
+                ->whereHas('planos', function (Builder $query) use ($tipo) {
+                    $query->whereHas('categoria', function (Builder $categoria) use ($tipo) {
                         $categoria->where('tipo', 'like', $tipo);
                     });
                 })->get();
+         
             } else {
-                $aluno = Aluno::where('cpf', '=', $cpf)->get();
-            }
-        } else {
-            if ($tipo != 'todos') { // caso a lisatagem não seja do tipo todos, filtra baseado na categoria do plano
-                $aluno = Aluno::where('nome', 'ilike', '%'.$busca.'%')
-                    ->whereHas('planos', function (Builder $query) use ($tipo) {
-                        $query->whereHas('categorias', function (Builder $categoria) use ($tipo) {
-                            $categoria->where('tipo', 'like', $tipo);
-                        });
-                    })->get();
-            } else {
-                $aluno = Aluno::where('nome', 'ilike', '%'.$busca.'%')->get();
+                $aluno = Aluno::where('cpf', '=', $busca)
+                ->orWhere('nome', 'ilike', '%'.$busca.'%')
+                ->get();
             }
         }
 
