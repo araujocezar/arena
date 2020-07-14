@@ -10,9 +10,10 @@ use Laravel\Ui\Presets\React;
 
 class PlanoController extends Controller
 {
+    protected $limite_pagina = 10;
     public function listar_plano()
     {
-        $lista = Plano::all();
+        $lista = Plano::paginate($this->limite_pagina);
         $categorias = Categoria::all();
         return view('plano.listagem-planos', ['planos' => $lista, 'categorias' => $categorias]);
     }
