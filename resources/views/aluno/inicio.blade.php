@@ -10,7 +10,7 @@
                         <h4 class="card-title ">Inicio</h4>
                     </div>
                     <div class="card-body" style="min-height: 35em;">
-    
+
                         @if(session('erro'))
                         <div class="alert alert-danger">{{ session('erro') }}</div>
                         @elseif(session('sucesso'))
@@ -24,7 +24,7 @@
                                     <span class="bmd-form-group">
                                         <input name="cpfAluno" type="text" class="form-control" id="cpfmask" placeholder="Insira o cpf do aluno" value="">
                                         <script type="text/javascript">
-                                                $('#cpfmask').mask('000.000.000-00');
+                                            $('#cpfmask').mask('000.000.000-00');
                                         </script>
                                     </span>
                                 </div>
@@ -50,6 +50,12 @@
                             </div>
                             <div class="col-lg-auto">
                                 <span class="bmd-form-group">{{ $aluno->cpf }}</span>
+                            </div>
+                            <div class="col-lg-auto">
+                                <span class="bmd-form-group"><label>Data aniversário: </label></span>
+                            </div>
+                            <div class="col-lg-auto">
+                                <span class="bmd-form-group">{{ $aluno->data_nascimento }}</span>
                             </div>
                         </div>
                         <br>
@@ -80,7 +86,7 @@
                                                                     {{ $plano->dias_semana - $presencas[$plano->id] }} dia(s) restante(s) esta semana
                                                                 </span>
                                                             </p>
-                                                        </h3>
+                                                            </h3>
                                                     </div>
                                                 </div>
                                             </div>
