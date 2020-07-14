@@ -66,13 +66,13 @@
                                             {{ $aluno->telefone }}
                                         </td>
                                         <td>
-                                            {{ $aluno->data_cadastro }}
+                                            {{ $aluno->data_cadastro->format('d-m-Y') }}
                                         </td>
                                         <td class="td-actions text-right">
                                             <form action="{{ route('aluno.destroy', [$tipo, $aluno->id])}}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <a rel="tooltip" class="btn btn-success btn-link" href="{{  route('listagem-alunos', $tipo)  }}" data-original-title="" title="">
+                                                <a rel="tooltip" class="btn btn-success btn-link" href="{{  route('aluno.editar', $aluno)  }}" data-original-title="" title="">
                                                     <i class="material-icons">edit</i>
                                                     <div class="ripple-container"></div>
                                                 </a>
