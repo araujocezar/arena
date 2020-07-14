@@ -24,40 +24,41 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::group(['middleware' => 'auth'], function () {
+    // rotas de aluno
+    Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name('listagem-alunos');
+    Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
+    Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
+    Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-aluno');
+    Route::post('/cadastro-aluno/save', 'AlunoController@save')->name('aluno.save');
+    Route::get('/editar-aluno/{id}', 'AlunoController@editar')->name('aluno.editar');
+    Route::put('/update-aluno/{id}', 'AlunoController@atualizarAluno')->name('aluno.update');
+    Route::group(['middleware' => 'adm'], function () {
+    // rotas de plano
+        Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-planos');
+        Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
+        Route::delete('/remover/planos/{id}', 'PlanoController@destroy')->name('plano.destroy');
+        Route::get('/editar/planos/{id}', 'PlanoController@edit')->name('plano.edit');
+        Route::post('/cadastro-plano', 'PlanoController@save')->name('plano.save');
+        Route::put('/update-plano/{id}', 'PlanoController@atualizar')->name('plano.atualizar');
+        Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index');
+    });
+    // rotas de aluguel de quadra
+    Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
+    Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
+    Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
+    Route::post('/cadastro-aluguel', 'AluguelController@save')->name('aluguel.save');
 
-// rotas de aluno
-Route::get('/listagem-alunos/{categoria}', 'AlunoController@listarAlunos')->name('listagem-alunos');
-Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')->name('listagem-alunos');
-Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
-Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-aluno');
-Route::post('/cadastro-aluno/save', 'AlunoController@save')->name('aluno.save');
-Route::get('/editar-aluno/{id}', 'AlunoController@editar')->name('aluno.editar');
-Route::put('/update-aluno/{id}', 'AlunoController@atualizarAluno')->name('aluno.update');
+    // Rotas de relatorio
 
-// rotas de plano
-Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-planos');
-Route::get('/cadastro-plano', 'PlanoController@criar_plano')->name('cadastro-plano');
-Route::delete('/remover/planos/{id}', 'PlanoController@destroy')->name('plano.destroy');
-Route::get('/editar/planos/{id}', 'PlanoController@edit')->name('plano.edit');
-Route::post('/cadastro-plano', 'PlanoController@save')->name('plano.save');
-Route::put('/update-plano/{id}', 'PlanoController@atualizar')->name('plano.atualizar');
 
-// rotas de aluguel de quadra
-Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
-Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
-Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
-Route::post('/cadastro-aluguel', 'AluguelController@save')->name('aluguel.save');
-
-// Rotas de relatorio
-
-Route::get('/relatorios', 'RelatorioController@index')->name('relatorios.index');
-
-//Rotas de tela inicial
-Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
-Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
-Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
-//Rotas presenca aluno
-Route::delete('/presenca/{id}', 'AlunoController@deletarPresenca')->name('presenca.delete');
+    //Rotas de tela inicial
+    Route::get('/inicio', 'AlunoController@inicio')->name('inicio');
+    Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
+    Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
+    //Rotas presenca aluno
+    Route::delete('/presenca/{id}', 'AlunoController@deletarPresenca')->name('presenca.delete');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('table-list', function () {

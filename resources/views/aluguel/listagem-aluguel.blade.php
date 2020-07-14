@@ -136,7 +136,7 @@
                     </div>
                     <div class="col-12">
                         <label for="data">Data</label>
-                        <input class="form-control" id="datepicker" type="text" name='data' required>
+                        <input class="form-control" id="datepicker" type="text" name='data' required autocomplete="off">
                         <script type="text/javascript">
                             $('#datepicker').datepicker({
                                 dateFormat: 'dd-mm-yy',
