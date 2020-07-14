@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +31,8 @@ Route::post('/listagem-alunos/{categoria}', 'AlunoController@filtrar_aluno_cpf')
 Route::delete('/remover/alunos/{categoria}/{id}', 'AlunoController@destroy')->name('aluno.destroy');
 Route::get('/cadastro-aluno', 'AlunoController@criar_aluno')->name('cadastro-aluno');
 Route::post('/cadastro-aluno/save', 'AlunoController@save')->name('aluno.save');
+Route::get('/editar-aluno/{id}', 'AlunoController@editar')->name('aluno.editar');
+Route::put('/update-aluno/{id}', 'AlunoController@atualizarAluno')->name('aluno.update');
 
 // rotas de plano
 Route::get('/listagem-planos', 'PlanoController@listar_plano')->name('listagem-planos');
@@ -55,7 +57,6 @@ Route::post('/inicio', 'AlunoController@buscarAluno')->name('buscarAluno');
 Route::post('/inicio/registrarPresenca', 'AlunoController@registrarPresenca')->name('registrarPresenca');
 //Rotas presenca aluno
 Route::delete('/presenca/{id}', 'AlunoController@deletarPresenca')->name('presenca.delete');
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('table-list', function () {

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'listagem-alunos', 'titlePage' => __('Listagem dos Alunos')])
+@extends('layouts.app', ['activePage' => $activePage ?? 'listagem-alunos', 'titlePage' => __('Listagem dos Alunos')])
 
 @section('content')
 <div class="content">
@@ -27,7 +27,7 @@
                             @csrf
                             <div class="row">
                                 <div class="col">
-                                    <input name="busca" id="busca" type="text" class="form-control" placeholder="Buscar por Nome ou CPF" value={{ old('busca')}}> {{ $errors->first('busca')}}
+                                    <input name="busca" id="busca" type="text" class="form-control" placeholder="Buscar por Nome ou CPF" value="{{ old('busca')}}"> {{ $errors->first('busca')}}
                                 </div>
                                 <div class="col-md-auto">
                                     <button type="submit" class="btn btn-primary">
@@ -51,6 +51,7 @@
                                     <th>
                                         Data de Pagamento
                                     </th>
+                                    <th></th>
                                 </thead>
                                 <tbody>
                                     @foreach($alunos as $aluno)
@@ -65,13 +66,13 @@
                                             {{ $aluno->telefone }}
                                         </td>
                                         <td>
-                                            {{ $aluno->data_cadastro }}
+                                            {{ $aluno->data_cadastro->format('d-m-Y') }}
                                         </td>
                                         <td class="td-actions text-right">
                                             <form action="{{ route('aluno.destroy', [$tipo, $aluno->id])}}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <a rel="tooltip" class="btn btn-success btn-link" href="{{  route('listagem-alunos', $tipo)  }}" data-original-title="" title="">
+                                                <a rel="tooltip" class="btn btn-success btn-link" href="{{  route('aluno.editar', $aluno)  }}" data-original-title="" title="">
                                                     <i class="material-icons">edit</i>
                                                     <div class="ripple-container"></div>
                                                 </a>

@@ -71,7 +71,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: <?= $categorias; ?> ,
         datasets : [{
-            data: <?= $alunosPorPlano; ?> ,
+            data: <?= $alunosPorCategoria; ?> ,
             backgroundColor : [
                 'rgba(55, 255, 32, 1)',
                 'rgba(54, 162, 235, 1)',

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'cadastro-aluno', 'titlePage' => __('Cadastro de Aluno')])
+@extends('layouts.app', ['activePage' => isset($aluno) ? 'listagem-alunos':'cadastro-aluno', 'titlePage' => __('Cadastro de Aluno')])
 
 @section('content')
 <body>
@@ -8,22 +8,35 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-header-primary">
-                        <h4 class="card-title ">Cadastro de Aluno</h4>
+                        <h4 class="card-title ">{{ isset($aluno) ? 'Editar Aluno' : "Cadastro de Aluno"}}</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('aluno.save') }}" method="post" autocomplete="off" class="form-horizontal" enctype="multipart/form-data">
+                        
+                        @if(session('erro'))
+                        <div class="alert alert-danger">{{ session('erro') }}</div>
+                        @elseif(session('sucesso'))
+                        <div class="alert alert-success">{{ session('sucesso') }}</div>
+                        @endif
+
+                        <form action="{{ isset($aluno) ? route('aluno.update', $aluno->id) : route('aluno.save') }}" 
+                              method="post" autocomplete="on" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
-                            @method('post')
+                            @if(isset($aluno))
+                                @method('put')
+                            @else
+                                @method('post')
+                            @endif
                             <div style="padding: 48px;">
                                 <div class="form-column">
                                     <div class="form-row">
                                         <div class="col-5">
                                             <label for="nome">Nome</label>
-                                            <input type="text" id="nome" name="nome" class="form-control">
+                                            <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? '' }}" required>
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
-                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf">
+                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf"
+                                                   value="{{ $aluno->cpf ?? '' }}" required>
                                             <script type="text/javascript">
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
@@ -32,31 +45,33 @@
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5" style="margin-top: 6px;">
                                             <label for="email">Email</label>
-                                            <input type="text" id="email" name="email" class="form-control">
+                                            <input type="text" id="email" name="email" class="form-control"  value="{{ $aluno->email ?? '' }}">
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
                                             <select class="form-control" id="sexo" name="sexo">
-                                                <option>Feminino</option>
-                                                <option>Masculino</option>
+                                                <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
+                                                <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5">
                                             <label for="telefone">Telefone</label>
-                                            <input type="text" id="telefonemask" name="telefone" class="form-control" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}" >
+                                            <input type="text" id="telefonemask" name="telefone" class="form-control"
+                                                   value="{{ $aluno->telefone ?? '' }}" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}">
                                             <script type="text/javascript">
                                                 $('#telefonemask').mask('(00) 0000-00009');
                                             </script>
                                         </div>
                                         <div class="col-5" style="margin-left: 40px;"><div class="container">
-                                            <label for="telefone">Data do Cadastro</label>
-                                            <input class="form-control" id="datepicker" type="text">
+                                            <label for="data_cadastro">Data do Cadastro</label>
+                                            <input class="form-control" id="datepicker" type="text" name='data_cadastro'
+                                                   value="{{ $aluno->data_cadastro->format('d-m-Y') ?? '' }}" required>
                                         </div>
                                         <script type="text/javascript">
                                             $('#datepicker').datepicker({  
-                                            format: 'mm-dd-yyyy',
+                                                dateFormat: 'dd-mm-yy',
                                             });  
                                         </script> 
                                         </div>
@@ -81,12 +96,27 @@
                             </div>
                             <div class="card-header row">
                                 <div class="col-sm card">
-                                    
+                                    <div class="container-radio column">
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="" />
+                                                <div class="panel panel-default card-input">
+                                                    <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
+                                                    <div class="panel-body column">
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
                                     @foreach ($funcionais as $func)
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="$func->id" />
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" 
+                                                {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading" style="color:black"><strong>{{$func->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -108,18 +138,35 @@
                                             <!-- nao ta dropando -->
                                         <div class="col-sm">
                                             <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamento">
+                                            <select class="form-control" id="pagamento" name="pagamentoFuncional">
                                                 <option>cartao</option>
                                                 <option>a vista 15% de desconto</option>
                                             </select>
                                         </div>
                                 </div>
                                 <div class="col-sm card">
+                                    <div class="container-radio column">
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value=""/>
+                                                <div class="panel panel-default card-input">
+                                                    <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
+                                                    <div class="panel-body column">
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
                                     @foreach ($futvolei as $fut)
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="$fut->id" />
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $fut->id }}"
+                                                {{ in_array($fut->id, $alunoPlanos) ? 'checked' : ''}}/>
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -141,7 +188,7 @@
                                     <!-- ta fazendo o drop mas ta sem back -->
                                        <div class="col-sm">
                                             <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamento">
+                                            <select class="form-control" id="pagamento" name="pagamentoFutvolei">
                                                 <option>cartao</option>
                                                 <option>a vista 15% de desconto</option>
                                             </select>
