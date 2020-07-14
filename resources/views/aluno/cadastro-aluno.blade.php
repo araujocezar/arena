@@ -11,7 +11,14 @@
                         <h4 class="card-title ">Cadastro de Aluno</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('aluno.save') }}" method="post" autocomplete="off" class="form-horizontal" enctype="multipart/form-data">
+                        
+                        @if(session('erro'))
+                        <div class="alert alert-danger">{{ session('erro') }}</div>
+                        @elseif(session('sucesso'))
+                        <div class="alert alert-success">{{ session('sucesso') }}</div>
+                        @endif
+
+                        <form action="{{ route('aluno.save') }}" method="post" autocomplete="on" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                             @method('post')
                             <div style="padding: 48px;">
@@ -86,7 +93,7 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="$func->id" />
+                                                <input type="radio" name="plano_id" class="card-input-element" value="{{ $func->id }}" />
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading" style="color:black"><strong>{{$func->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -119,7 +126,7 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="$fut->id" />
+                                                <input type="radio" name="plano_id" class="card-input-element" value="{{ $fut->id }}" />
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
                                                     <div class="panel-body column">
