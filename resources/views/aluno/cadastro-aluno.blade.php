@@ -41,23 +41,42 @@
                                                 </script>
                                             </div>
                                         </div>
-                                        <div class="form-row" style="margin-top: 12px;">
-                                            <div class="col-5" style="margin-top: 6px;">
-                                                <label for="email">Email</label>
-                                                <input type="text" id="email" name="email" class="form-control" value="{{ $aluno->email ?? '' }}">
-                                            </div>
-                                            <div class="col-5">
-                                                <label for="sexo">Sexo:</label>
-                                                <select class="form-control" id="sexo" name="sexo">
-                                                    @if (isset($aluno))
-                                                    <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
-                                                    <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
-                                                    @else
-                                                    <option>Feminino</option>
-                                                    <option>Masculino</option>
-                                                    @endif
-                                                </select>
-                                            </div>
+                                        <div class="col-5" style="margin-left: 48px;">
+                                            <label for="cpf">CPF</label>
+                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf"
+                                                   value="{{ $aluno->cpf ?? '' }}" required>
+                                            <script type="text/javascript">
+                                                $('#cpfmask').mask('000.000.000-00');
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="form-row" style="margin-top: 12px;">
+                                        <div class="col-5" style="margin-top: 6px;">
+                                            <label for="email">Email</label>
+                                            <input type="text" id="email" name="email" class="form-control"  value="{{ $aluno->email ?? '' }}">
+                                        </div>
+                                        <div class="col-5" style="margin-left: 48px;">
+                                            <label for="sexo">Sexo:</label>
+                                            <select class="form-control" id="sexo" name="sexo">
+                                                @if (isset($aluno))
+                                                <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
+                                                <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
+                                                @else
+                                                <option></option>
+                                                <option>Feminino</option>
+                                                <option>Masculino</option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row" style="margin-top: 12px;">
+                                        <div class="col-5">
+                                            <label for="telefone">Telefone</label>
+                                            <input type="text" id="telefonemask" name="telefone" class="form-control"
+                                                   value="{{ $aluno->telefone ?? '' }}" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}">
+                                            <script type="text/javascript">
+                                                $('#telefonemask').mask('(00) 0000-00009');
+                                            </script>
                                         </div>
                                         <div class="form-row" style="margin-top: 12px;">
                                             <div class="col-5">
@@ -93,7 +112,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-row" style="margin-top: 12px; margin-right: 8px">
+                                        <div class="col-5">
+                                            <div class="container">
+                                                <label for="data_nascimento">Data de nascimento</label>
+                                                <input class="form-control" id="datepicker_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? '' }}">
+                                            </div>
+                                            <script type="text/javascript">
+                                                $('#datepicker_nascimento').datepicker({
+                                                    dateFormat: 'dd-mm-yy',
+                                                    changeMonth: true,
+                                                    changeYear: true,
+                                                    yearRange: '1910:2020'
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
                                 </div>
+                        </div>
 
                                 <div class="content">
                                     <div class="card-header">
