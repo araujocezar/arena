@@ -9,6 +9,7 @@ use App\PresencaAluno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\QueryException;
 
 class AlunoController extends Controller
 {
@@ -50,12 +51,12 @@ class AlunoController extends Controller
         $alunoPlano = DB::select('select * from aluno_plano where aluno_id = ?', [$idAluno]);
         $planos = [];
         foreach ($alunoPlano as $plano) {
-            $p = Plano::firstWhere('id', $plano->id);
+            $p = Plano::firstWhere('id', $plano->plano_id);
             if(isset($p)){
                 $planos[] = $p;
             }
         }
-        
+
         return $planos;
     }
 
@@ -141,7 +142,6 @@ class AlunoController extends Controller
 
     public function filtrar_aluno_cpf($tipo, Request $request)
     {
-        dd($request->all());
         $busca = trim($request->busca);
         if ($busca === null || $busca === '') {
             $aluno = Aluno::all();
@@ -227,22 +227,32 @@ class AlunoController extends Controller
     public function save(Request $request)
     {
         $dados = $request->all();
-
-        if(isset($dados['plano_id'])){
-            $aluno = new Aluno();
-            $aluno->fill($dados);
-            $aluno->data_expiracao = now();
-            $aluno->data_cadastro = now();
-            $aluno->save();
-            
-            DB::table('aluno_plano')->insert( ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id'], ]);
-
-            $response = redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
-        } else {
-            $response = back()->withInput()->with('erro', 'Informe o plano!!!');
-        }
-        
-        return $response;
+        try{
+            if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+                $aluno = new Aluno();
+                $aluno->fill($dados);
+                $aluno->data_expiracao = now();
+                $aluno->data_cadastro = now();
+                $aluno->save();
+                
+                if(isset($dados['plano_id_func'])){
+                    $dadosFunc = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_func'], 'created_at' => now(), 'updated_at' => now()];
+                    DB::table('aluno_plano')->insert($dadosFunc);
+                }
+                if(isset($dados['plano_id_fut'])){
+                    $dadosFut = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_fut'], 'created_at' => now(), 'updated_at' => now()];
+                    DB::table('aluno_plano')->insert($dadosFut);
+                }
+                
+                $response = redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+            } else {
+                $response = back()->withInput()->with('erro', 'Informe o(s) plano(s)!!!');
+            }
+        } catch (QueryException $e){
+            $response = back()->withInput()->with('erro', $e->getMessage());
+        } finally{
+            return $response;
+        }        
     }
 
     public function deletarPresenca($id)
