@@ -17,8 +17,10 @@ class CreateAluguelsTable extends Migration
             $table->id();
             $table->string('cpf');
             $table->string('nome');
-            $table->string('data');
+            $table->timestamp('data');
             $table->string('tempo');
+            $table->string('turno');
+            $table->double('valor');
             $table->timestamps();
             $table->softDeletes();
         });

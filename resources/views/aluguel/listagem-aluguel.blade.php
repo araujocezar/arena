@@ -58,6 +58,12 @@
                                     <th>
                                         Tempo(horas)
                                     </th>
+                                    <th>
+                                        Turno
+                                    </th>
+                                    <th>
+                                        Valor
+                                    </th>
                                 </thead>
                                 <tbody>
                                     @foreach($alugueis as $aluguel)
@@ -73,6 +79,12 @@
                                         </td>
                                         <td>
                                             {{ $aluguel->tempo }} Hora(s)
+                                        </td>
+                                        <td>
+                                            {{ $aluguel->turno }}
+                                        </td>
+                                        <td>
+                                            {{ $aluguel->valor }}
                                         </td>
                                         <td class="td-actions text-right">
                                             <form action="{{ route('aluguel.destroy', $aluguel->id)}}" method="post">
@@ -106,26 +118,43 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('aluguel.save') }}" method="post" class="form-horizontal" enctype="multipart/form-data" id="form-modal">
+                    @csrf
+                    @method('post')
                     <div class="form-column">
                         <div class="col-12">
                             <label for="nome">Nome</label>
-                            <input type="text" id="nome" class="form-control">
+                            <input type="text" id="nome" class="form-control" name="nome" required>
                         </div>
                     </div>
                     <div class="col-12">
                         <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" class="form-control">
+                        <input minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf" required>
+                        <script type="text/javascript">
+                            $('#cpfmask').mask('000.000.000-00');
+                        </script>
                     </div>
                     <div class="col-12">
                         <label for="data">Data</label>
-                        <input type="number" id="data" class="form-control">
+                        <input class="form-control" id="datepicker" type="text" name='data' required>
+                        <script type="text/javascript">
+                            $('#datepicker').datepicker({
+                                dateFormat: 'dd-mm-yy',
+                            });
+                        </script>
                     </div>
                     <div class="form-group col-12">
                         <label for="tempo">Selecione quantas horas</label>
-                        <select class="form-control" id="tempo">
+                        <select class="form-control" id="tempo" name="tempo">
                             <option>1</option>
                             <option>2</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="turno">Selecione o turno</label>
+                        <select class="form-control" id="turno" name="turno">
+                            <option value="3">Manhã</option>
+                            <option value="4">Noite</option>
                         </select>
                     </div>
 
@@ -133,7 +162,7 @@
             </div>
             <div class=" modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary">Salvar</button>
+                <button form="form-modal" value="Submit" type="submit" class="btn btn-primary">Salvar</button>
             </div>
         </div>
     </div>

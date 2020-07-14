@@ -46,6 +46,7 @@ Route::put('/update-plano/{id}', 'PlanoController@atualizar')->name('plano.atual
 Route::get('/listagem-aluguel', 'AluguelController@listar_aluguel')->name('listagem-aluguel');
 Route::post('/listagem-aluguel', 'AluguelController@filtrar_aluguel_cpf')->name('listagem-aluguel');
 Route::delete('/remover/{id}', 'AluguelController@destroy')->name('aluguel.destroy');
+Route::post('/cadastro-aluguel', 'AluguelController@save')->name('aluguel.save');
 
 // Rotas de relatorio
 

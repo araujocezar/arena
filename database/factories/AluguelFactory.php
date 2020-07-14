@@ -11,5 +11,7 @@ $factory->define(Aluguel::class, function (Faker $faker) {
         'nome' => $faker->name,
         'data' => $faker->date(),
         'tempo' => $faker->numberBetween(1, 2),
+        'turno' => $faker->amPm(),
+        'valor' =>$faker->randomFloat()
     ];
 });
