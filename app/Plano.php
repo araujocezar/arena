@@ -30,6 +30,6 @@ class Plano extends Model
 
     public function categoria()
     {
-        return Categoria::firstWhere('id', $this->categoria_id);
+        return $this->hasOne('App\Categoria', 'id', 'categoria_id');
     }
 }
