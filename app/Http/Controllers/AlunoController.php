@@ -255,6 +255,49 @@ class AlunoController extends Controller
         }        
     }
 
+    public function editar($id)
+    {
+        $aluno = Aluno::firstWhere('id', $id);            
+        $alunoPlanos = DB::table('aluno_plano')->where('aluno_id', $id)->pluck('plano_id')->toArray();
+        
+        $planos = Plano::all();
+        $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
+        $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
+        
+        $dados = [
+            'planos' => $planos, 
+            'funcionais' => $planos_funcional,
+            'futvolei' => $planos_futvolei,
+            'aluno' => $aluno,
+            'alunoPlanos' => $alunoPlanos,
+        ];
+
+        return view('aluno.cadastro-aluno', $dados);
+    }
+
+    public function atualizarAluno(Request $request, $id)
+    {
+        $dados = $request->all();
+
+        $aluno = Aluno::firstWhere('id', $id);            
+        $aluno->fill($dados);   
+        $aluno->data_expiracao = now();
+        $aluno->save();
+
+        DB::table('aluno_plano')->where('aluno_id', $id)->delete();
+
+        if(isset($dados['plano_id_func'])){
+                $dadosFunc = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_func'], 'created_at' => now(), 'updated_at' => now()];
+                DB::table('aluno_plano')->insert($dadosFunc);
+        }
+        if(isset($dados['plano_id_fut'])){
+            $dadosFut = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_fut'], 'created_at' => now(), 'updated_at' => now()];
+            DB::table('aluno_plano')->insert($dadosFut);
+        }
+
+        return redirect()->route('listagem-alunos', ['categoria' => 'todos']);
+    }
+
     public function deletarPresenca($id)
     {
         $presenca = PresencaAluno::firstWhere('id', $id);
