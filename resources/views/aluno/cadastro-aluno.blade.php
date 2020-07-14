@@ -54,6 +54,7 @@
                                                 <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
                                                 <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                                 @else
+                                                <option></option>
                                                 <option>Feminino</option>
                                                 <option>Masculino</option>
                                                 @endif
@@ -81,8 +82,24 @@
                                         </script> 
                                         </div>
                                     </div>
+                                    <div class="form-row" style="margin-top: 12px; margin-right: 8px">
+                                        <div class="col-5">
+                                            <div class="container">
+                                                <label for="data_nascimento">Data de nascimento</label>
+                                                <input class="form-control" id="datepicker_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? '' }}">
+                                            </div>
+                                            <script type="text/javascript">
+                                                $('#datepicker_nascimento').datepicker({
+                                                    dateFormat: 'dd-mm-yy',
+                                                    changeMonth: true,
+                                                    changeYear: true,
+                                                    yearRange: '1910:2020'
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                        </div>
 
                         <div class="content">
                             <div class="card-header">

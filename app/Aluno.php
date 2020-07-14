@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Aluno extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['cpf', 'nome', 'email', 'sexo', 'telefone', 'data_cadastro'];
+    protected $fillable = ['cpf', 'nome', 'email', 'sexo', 'telefone', 'data_cadastro', 'data_nascimento'];
     protected $dates = ['data_cadastro', 'created_at', 'updated_at', 'deleted_at'];
 
     public static $rules = [
