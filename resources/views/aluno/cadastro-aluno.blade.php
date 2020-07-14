@@ -26,11 +26,11 @@
                                     <div class="form-row">
                                         <div class="col-5">
                                             <label for="nome">Nome</label>
-                                            <input type="text" id="nome" name="nome" class="form-control">
+                                            <input type="text" id="nome" name="nome" class="form-control" required>
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
-                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf">
+                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf" required>
                                             <script type="text/javascript">
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
@@ -59,11 +59,11 @@
                                         </div>
                                         <div class="col-5" style="margin-left: 40px;"><div class="container">
                                             <label for="telefone">Data do Cadastro</label>
-                                            <input class="form-control" id="datepicker" type="text">
+                                            <input class="form-control" id="datepicker" type="text" required>
                                         </div>
                                         <script type="text/javascript">
                                             $('#datepicker').datepicker({  
-                                            format: 'mm-dd-yyyy',
+                                                dateFormat: 'dd-mm-yy',
                                             });  
                                         </script> 
                                         </div>
@@ -88,12 +88,26 @@
                             </div>
                             <div class="card-header row">
                                 <div class="col-sm card">
-                                    
+                                    <div class="container-radio column">
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="" />
+                                                <div class="panel panel-default card-input">
+                                                    <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
+                                                    <div class="panel-body column">
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
                                     @foreach ($funcionais as $func)
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="{{ $func->id }}" />
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" />
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading" style="color:black"><strong>{{$func->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -115,18 +129,34 @@
                                             <!-- nao ta dropando -->
                                         <div class="col-sm">
                                             <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamento">
+                                            <select class="form-control" id="pagamento" name="pagamentoFuncional">
                                                 <option>cartao</option>
                                                 <option>a vista 15% de desconto</option>
                                             </select>
                                         </div>
                                 </div>
                                 <div class="col-sm card">
+                                    <div class="container-radio column">
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value=""/>
+                                                <div class="panel panel-default card-input">
+                                                    <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
+                                                    <div class="panel-body column">
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                        <div>_</div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
                                     @foreach ($futvolei as $fut)
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id" class="card-input-element" value="{{ $fut->id }}" />
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $fut->id }}" />
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
                                                     <div class="panel-body column">
@@ -148,7 +178,7 @@
                                     <!-- ta fazendo o drop mas ta sem back -->
                                        <div class="col-sm">
                                             <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamento">
+                                            <select class="form-control" id="pagamento" name="pagamentoFutvolei">
                                                 <option>cartao</option>
                                                 <option>a vista 15% de desconto</option>
                                             </select>
