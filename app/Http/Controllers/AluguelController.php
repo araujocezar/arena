@@ -54,7 +54,40 @@ class AluguelController extends Controller
     {
         //
     }
-
+    public function save(Request $request)
+    {   
+        $dados = $request->all();
+        try {
+            $aluguel = new Aluguel();
+            $aluguel->cpf = $dados['cpf'];
+            $aluguel->nome = $dados['nome'];
+            $aluguel->data = $dados['data'];
+            $aluguel->tempo = $dados['tempo'];
+            if($dados['turno'] == 3){
+                $aluguel->turno = 'Dia';
+            }
+            if ($dados['turno'] == 4) {
+                $aluguel->turno = 'Noite';
+            }
+            if ($dados['turno'] == 3) {
+                if($dados['tempo'] == 1){
+                    $aluguel->valor = 60.0;
+                } elseif($dados['tempo'] == 2){
+                    $aluguel->valor = 110.0;
+                }
+            }  elseif ($dados['turno'] == 4) {
+                if ($dados['tempo'] == 1) {
+                    $aluguel->valor = 70.0;
+                } elseif ($dados['tempo'] == 2) {
+                    $aluguel->valor = 130.0;
+                }
+            }
+            $aluguel->save();
+            return redirect()->route('listagem-aluguel')->withStatus(__('Aluguel cadastrado com sucesso!'));
+        } catch (\Exception $e) {
+            return redirect()->route('listagem-aluguel')->withErros(__('Erro ao cadastrar Aluguel'));
+        } 
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -10,7 +10,7 @@
                         <h4 class="card-title ">Inicio</h4>
                     </div>
                     <div class="card-body" style="min-height: 35em;">
-    
+
                         @if(session('erro'))
                         <div class="alert alert-danger">{{ session('erro') }}</div>
                         @elseif(session('sucesso'))
@@ -24,7 +24,7 @@
                                     <span class="bmd-form-group">
                                         <input name="cpfAluno" type="text" class="form-control" id="cpfmask" placeholder="Insira o cpf do aluno" value="">
                                         <script type="text/javascript">
-                                                $('#cpfmask').mask('000.000.000-00');
+                                            $('#cpfmask').mask('000.000.000-00');
                                         </script>
                                     </span>
                                 </div>
@@ -51,6 +51,12 @@
                             <div class="col-lg-auto">
                                 <span class="bmd-form-group">{{ $aluno->cpf }}</span>
                             </div>
+                            <div class="col-lg-auto">
+                                <span class="bmd-form-group"><label>Data aniversário: </label></span>
+                            </div>
+                            <div class="col-lg-auto">
+                                <span class="bmd-form-group">{{ $aluno->data_nascimento->format('d-m-Y') }}</span>
+                            </div>
                         </div>
                         <br>
                         <label for="">Planos Ativos </label>
@@ -69,7 +75,7 @@
                                                 <div class="card card-stats">
                                                     <div class="card-header">
                                                         <div class="card-icon">
-                                                            <b>{{ strtoupper($plano->categoria()->tipo) }}</b>
+                                                            <b>{{ strtoupper($plano->categoria->tipo) }}</b>
                                                         </div>
                                                         <h5 class="card-title">
                                                             <p>
@@ -117,7 +123,7 @@
                             <tbody>
                                 @foreach($presencasHoje as $presenca)
                                     <tr>
-                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria()->tipo }}</td>
+                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria->tipo }}</td>
                                         <td>{{ $presenca->aluno()->nome ?? '' }}</td>
                                         <td>{{ $presenca->created_at->format('H:i:s d-m-Y') }}</td>
                                         <td>

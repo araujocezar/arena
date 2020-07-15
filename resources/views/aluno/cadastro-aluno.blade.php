@@ -41,7 +41,7 @@
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
                                         </div>
-                                    </div>
+                                    </div>  
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5" style="margin-top: 6px;">
                                             <label for="email">Email</label>
@@ -49,11 +49,12 @@
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
-                                            <select class="form-control" id="sexo" name="sexo">
+                                            <select class="form-control" id="sexo" name="sexo" required>
                                                 @if (isset($aluno))
                                                 <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
                                                 <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                                 @else
+                                                <option></option>
                                                 <option>Feminino</option>
                                                 <option>Masculino</option>
                                                 @endif
@@ -69,16 +70,27 @@
                                                 $('#telefonemask').mask('(00) 0000-00009');
                                             </script>
                                         </div>
-                                        <div class="col-5" style="margin-left: 40px;"><div class="container">
-                                            <label for="data_cadastro">Data do Cadastro</label>
-                                            <input class="form-control" id="datepicker" type="text" name='data_cadastro'
-                                                   value="{{ $aluno->data_cadastro ?? '' }}" required>
+                                        <div class="col-5" style="margin-left: 48px;">
+                                                <label for="data_cadastro">Data do Cadastro</label>
+                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro'
+                                                        value="{{ $aluno->data_cadastro ?? '' }}" required>
+                                            <script type="text/javascript">
+                                                $('#datepicker').datepicker({  
+                                                    dateFormat: 'dd-mm-yy',
+                                                });  
+                                            </script> 
                                         </div>
-                                        <script type="text/javascript">
-                                            $('#datepicker').datepicker({  
-                                                dateFormat: 'dd-mm-yy',
-                                            });  
-                                        </script> 
+                                    </div>
+                                    <div class="form-row" style="margin-top: 12px;">
+                                        <div class="col-5">
+                                            <label for="datepicker_data_nascimento">Data do Nascimento</label>
+                                            <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento'
+                                                    value="{{ $aluno->data_nascimento ?? '' }}" required>
+                                            <script type="text/javascript">
+                                                $('#datepicker_data_nascimento').datepicker({  
+                                                    dateFormat: 'dd-mm-yy',
+                                                });
+                                            </script> 
                                         </div>
                                     </div>
                                 </div>
@@ -252,16 +264,13 @@
     .card-input-element {
         display: none;
     }
-
     .card-input {
         margin: 10px;
         padding: 00px;
     }
-
     .card-input:hover {
         cursor: pointer;
     }
-
     .card-input-element:checked+.card-input {
         box-shadow: 0 0 1px 1px #2ecc71;
     }
