@@ -80,6 +80,11 @@
                                                                     {{ $plano->dias_semana - $presencas[$plano->id] }} dia(s) restante(s) esta semana
                                                                 </span>
                                                             </p>
+                                                            <p>
+                                                                <span style="margin-right: 10em;">
+                                                                    Expira em {{ strftime("%d-%m-%Y", strtotime($datasExpiracao[$plano->id])) }}
+                                                                </span>
+                                                            </p>
                                                         </h3>
                                                     </div>
                                                 </div>
