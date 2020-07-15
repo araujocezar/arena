@@ -21,8 +21,9 @@ class CreateAlunosTable extends Migration
             $table->string('sexo')->nullable();
             $table->string('telefone')->nullable();
             $table->timestamp('data_cadastro');
+            $table->timestamp('data_nascimento');
             $table->timestamp('data_expiracao');
-            $table->timestamp('data_pagamento')->nullable();
+            $table->timestamp('data_nascimento')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

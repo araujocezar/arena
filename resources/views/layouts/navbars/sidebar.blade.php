@@ -58,24 +58,28 @@
           </ul>
         </div>
       </li>
+      @if (auth()->user()->admin == 1)
       <li class="nav-item{{ $activePage == 'listagem-planos' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('listagem-planos') }}">
           <i class=" material-icons">store</i>
           <span class="sidebar-normal">{{ __('Planos') }} </span>
         </a>
       </li>
+      @endif
       <li class="nav-item{{ $activePage == 'listagem-aluguel' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('listagem-aluguel') }}">
           <i class=" material-icons">folder_open</i>
           <span class="sidebar-normal">{{ __('Aluguel de quadra') }} </span>
         </a>
       </li>
+      @if (auth()->user()->admin == 1)
       <li class="nav-item{{ $activePage == 'relatorios' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('relatorios.index') }}">
           <i class=" material-icons">poll</i>
           <span class="sidebar-normal">{{ __('Relatorios') }} </span>
         </a>
       </li>
+      @endif
     </ul>
   </div>
 </div>

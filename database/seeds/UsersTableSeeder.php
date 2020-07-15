@@ -18,8 +18,28 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@material.com',
             'email_verified_at' => now(),
             'password' => Hash::make('secret'),
+            'admin' => 0,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Lucas Admin',
+            'email' => 'lucas@arenadasflores.com.br',
+            'email_verified_at' => now(),
+            'password' => Hash::make('arena@admin'),
+            'admin' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Funcionário Arena',
+            'email' => 'funcionario@arenadasflores.com.br',
+            'email_verified_at' => now(),
+            'password' => Hash::make('arena@funcionario'),
+            'admin' => 0,
             'created_at' => now(),
             'updated_at' => now()
         ]);
     }
+    
 }
