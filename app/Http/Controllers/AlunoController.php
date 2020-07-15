@@ -13,6 +13,8 @@ use Illuminate\Database\QueryException;
 
 class AlunoController extends Controller
 {
+    protected $limite_pagina = 10;
+
     public function inicio()
     {
         return view('aluno.inicio', ['presencasHoje' => $this->pegarPresencasHoje()]);
@@ -27,6 +29,7 @@ class AlunoController extends Controller
             $dados = [
                 'aluno' => $aluno,
                 'planos' => $planos,
+                'datasExpiracao' => $this->pegarDatasExpiracao($aluno->id),
                 'presencas' => $this->pegarPresencasAluno($aluno->id, $planos),
                 'presencasHoje' => $this->pegarPresencasHoje(),
             ];
@@ -58,6 +61,14 @@ class AlunoController extends Controller
         }
 
         return $planos;
+    }
+
+    private function pegarDatasExpiracao($idAluno)
+    {
+        $alunoPlano = DB::table('aluno_plano')->where('aluno_id', $idAluno)->get();
+        $plunked = $alunoPlano->pluck('data_expiracao', 'plano_id');
+
+        return $plunked;
     }
 
     private function pegarPresencasAluno($alunoId, $planos)
@@ -121,16 +132,16 @@ class AlunoController extends Controller
             $lista = [];
             $activePage = 'listagem-alunos';
             if ($parametros == 'todos') {
-                $lista = Aluno::all();
+                $lista = Aluno::paginate($this->limite_pagina);
             } elseif ($parametros == 'futvolei') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '1');
-                })->get();
+                })->paginate($this->limite_pagina);
                 $activePage = 'listagem-futvolei';
             } elseif ($parametros == 'funcional') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
                     $query->where('categoria_id', '=', '2');
-                })->get();
+                })->paginate($this->limite_pagina);
                 $activePage = 'listagem-funcional';
             }
 
@@ -233,11 +244,25 @@ class AlunoController extends Controller
                 $aluno->save();
                 
                 if(isset($dados['plano_id_func'])){
-                    $dadosFunc = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_func'], 'created_at' => now(), 'updated_at' => now()];
+                    $dadosFunc = [
+                        'aluno_id' => $aluno->id,
+                        'plano_id' => $dados['plano_id_func'],
+                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                    
                     DB::table('aluno_plano')->insert($dadosFunc);
                 }
                 if(isset($dados['plano_id_fut'])){
-                    $dadosFut = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_fut'], 'created_at' => now(), 'updated_at' => now()];
+                    $dadosFut = [
+                        'aluno_id' => $aluno->id, 
+                        'plano_id' => $dados['plano_id_fut'], 
+                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                        
                     DB::table('aluno_plano')->insert($dadosFut);
                 }
                 
@@ -256,7 +281,7 @@ class AlunoController extends Controller
     {
         $aluno = Aluno::firstWhere('id', $id);            
         $alunoPlanos = DB::table('aluno_plano')->where('aluno_id', $id)->pluck('plano_id')->toArray();
-        
+
         $planos = Plano::all();
         $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
         $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
@@ -277,18 +302,30 @@ class AlunoController extends Controller
         $dados = $request->all();
 
         $aluno = Aluno::firstWhere('id', $id);            
-        $aluno->fill($dados);   
+        $aluno->fill($dados);
         $aluno->data_expiracao = now();
         $aluno->save();
 
         DB::table('aluno_plano')->where('aluno_id', $id)->delete();
 
         if(isset($dados['plano_id_func'])){
-                $dadosFunc = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_func'], 'created_at' => now(), 'updated_at' => now()];
-                DB::table('aluno_plano')->insert($dadosFunc);
+            $dadosFunc = [
+                'aluno_id' => $aluno->id, 
+                'plano_id' => $dados['plano_id_func'],
+                'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            DB::table('aluno_plano')->insert($dadosFunc);
         }
         if(isset($dados['plano_id_fut'])){
-            $dadosFut = ['aluno_id' => $aluno->id, 'plano_id' => $dados['plano_id_fut'], 'created_at' => now(), 'updated_at' => now()];
+            $dadosFut = [
+                'aluno_id' => $aluno->id, 
+                'plano_id' => $dados['plano_id_fut'], 
+                'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
             DB::table('aluno_plano')->insert($dadosFut);
         }
 

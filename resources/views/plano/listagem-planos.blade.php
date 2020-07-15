@@ -75,6 +75,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $planos->links() }}
                         </div>
                     </div>
                 </div>

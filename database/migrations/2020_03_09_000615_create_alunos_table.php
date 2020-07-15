@@ -23,7 +23,6 @@ class CreateAlunosTable extends Migration
             $table->timestamp('data_cadastro');
             $table->timestamp('data_nascimento');
             $table->timestamp('data_expiracao');
-            $table->timestamp('data_nascimento')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

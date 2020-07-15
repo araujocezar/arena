@@ -55,7 +55,7 @@
                                 <span class="bmd-form-group"><label>Data aniversário: </label></span>
                             </div>
                             <div class="col-lg-auto">
-                                <span class="bmd-form-group">{{ $aluno->data_nascimento }}</span>
+                                <span class="bmd-form-group">{{ $aluno->data_nascimento->format('d-m-Y') }}</span>
                             </div>
                         </div>
                         <br>
@@ -86,7 +86,12 @@
                                                                     {{ $plano->dias_semana - $presencas[$plano->id] }} dia(s) restante(s) esta semana
                                                                 </span>
                                                             </p>
-                                                            </h3>
+                                                            <p>
+                                                                <span style="margin-right: 10em;">
+                                                                    Expira em {{ strftime("%d-%m-%Y", strtotime($datasExpiracao[$plano->id])) }}
+                                                                </span>
+                                                            </p>
+                                                        </h3>
                                                     </div>
                                                 </div>
                                             </div>
