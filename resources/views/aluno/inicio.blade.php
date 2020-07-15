@@ -55,7 +55,7 @@
                                 <span class="bmd-form-group"><label>Data aniversário: </label></span>
                             </div>
                             <div class="col-lg-auto">
-                                <span class="bmd-form-group">{{ $aluno->data_nascimento }}</span>
+                                <span class="bmd-form-group">{{ $aluno->data_nascimento->format('d-m-Y') }}</span>
                             </div>
                         </div>
                         <br>
