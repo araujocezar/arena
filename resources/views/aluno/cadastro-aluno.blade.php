@@ -91,9 +91,27 @@
                             <div class="card-header row">
                                 <div class="teste col-sm">
                                     <h4><strong>FUNCIONAL</strong></h4>
+                                    <div class="col-sm">
+                                        <label for="dale">Tempo de Plano</label>
+                                        <select class="form-control" name="tempoPlanoFunc">
+                                            <option value="1">Mensal</option>
+                                            <option value="3">Trimestral (desconto 10%)</option>
+                                            <option value="6">Semestral (desconto 15%)</option>
+                                            <option value="12">Anual (desconto 20%)</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-sm">
                                     <h4><strong>FUTVÔLEI</strong></h4>
+                                    <div class="col-sm">
+                                        <label for="dale">Tempo de Plano</label>
+                                        <select class="form-control" name="tempoPlanoFut">
+                                            <option value="1">Mensal</option>
+                                            <option value="3">Trimestral (desconto 10%)</option>
+                                            <option value="6">Semestral (desconto 15%)</option>
+                                            <option value="12">Anual (desconto 20%)</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-sm">
                                     <h4><strong>COMBO</strong></h4>
@@ -144,14 +162,6 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                            <!-- nao ta dropando -->
-                                        <div class="col-sm">
-                                            <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamentoFuncional">
-                                                <option>cartao</option>
-                                                <option>a vista 15% de desconto</option>
-                                            </select>
-                                        </div>
                                 </div>
                                 <div class="col-sm card">
                                     <div class="container-radio column">
@@ -175,10 +185,10 @@
                                         <div>
                                             <label>
                                                 @if(isset($alunoPlanos))
-                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" 
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $func->id }}" 
                                                 {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
                                                 @else
-                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" />
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $func->id }}" />
                                                 @endif 
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
@@ -198,14 +208,6 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                    <!-- ta fazendo o drop mas ta sem back -->
-                                       <div class="col-sm">
-                                            <label for="dale">Forma de Pagamento:</label>
-                                            <select class="form-control" id="pagamento" name="pagamentoFutvolei">
-                                                <option>cartao</option>
-                                                <option>a vista 15% de desconto</option>
-                                            </select>
-                                        </div>
                                 </div>
                                 <div class="col-sm card">
                                     <div class="container-radio column">
