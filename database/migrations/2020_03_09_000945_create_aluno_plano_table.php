@@ -20,6 +20,7 @@ class CreateAlunoPlanoTable extends Migration
             $table->integer('plano_id');
             $table->foreign('plano_id')->references('id')->on('planos');
             $table->timestamp('ultima_visita')->nullable();
+            $table->timestamp('data_expiracao');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -10,6 +10,7 @@ $factory->define(Alunoplano::class, function (Faker $faker) {
         'aluno_id' => $faker->numberBetween(1, 10),
         'plano_id' => $faker->numberBetween(1, 10),
         'dias_restantes' => $faker->numberBetween(1, 5),
-        'ultima_visita' => $faker->date()
+        'ultima_visita' => $faker->date(),
+        'data_expiracao' => $faker->date(),
     ];
 });
