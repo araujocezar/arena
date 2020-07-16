@@ -132,6 +132,7 @@ class AlunoController extends Controller
             $lista = [];
             $activePage = 'listagem-alunos';
             if ($parametros == 'todos') {
+                
                 $lista = Aluno::paginate($this->limite_pagina);
             } elseif ($parametros == 'futvolei') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
@@ -168,12 +169,12 @@ class AlunoController extends Controller
                     $query->whereHas('categoria', function (Builder $categoria) use ($tipo) {
                         $categoria->where('tipo', 'like', $tipo);
                     });
-                })->get();
+                })->paginate($this->limite_pagina);
          
             } else {
                 $aluno = Aluno::where('cpf', '=', $busca)
                 ->orWhere('nome', 'ilike', '%'.$busca.'%')
-                ->get();
+                ->paginate($this->limite_pagina);
             }
         }
 

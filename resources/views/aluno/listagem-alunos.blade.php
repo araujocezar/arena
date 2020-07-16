@@ -86,7 +86,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            @if ($alunos)
                             {{ $alunos->links() }}
+                            @endif
                         </div>
                     </div>
                 </div>

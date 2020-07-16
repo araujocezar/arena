@@ -89,6 +89,9 @@
                                             <script type="text/javascript">
                                                 $('#datepicker_data_nascimento').datepicker({  
                                                     dateFormat: 'dd-mm-yy',
+                                                    changeYear: true,
+                                                    changeMonth: true,
+                                                    yearRange: '1910:2020'
                                                 });
                                             </script> 
                                         </div>
