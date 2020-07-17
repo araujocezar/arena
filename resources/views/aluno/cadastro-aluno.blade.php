@@ -31,12 +31,12 @@
                                     <div class="form-row">
                                         <div class="col-5">
                                             <label for="nome">Nome</label>
-                                            <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? '' }}" required>
+                                            <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? old('nome') }}" required>
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
                                             <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf"
-                                                   value="{{ $aluno->cpf ?? '' }}" required>
+                                                   value="{{ $aluno->cpf ?? old('cpf') }}" required>
                                             <script type="text/javascript">
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
@@ -45,7 +45,7 @@
                                     <div class="form-row" style="margin-top: 12px;">
                                         <div class="col-5" style="margin-top: 6px;">
                                             <label for="email">Email</label>
-                                            <input type="text" id="email" name="email" class="form-control"  value="{{ $aluno->email ?? '' }}">
+                                            <input type="text" id="email" name="email" class="form-control"  value="{{ $aluno->email ?? old('email') }}">
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
@@ -55,8 +55,8 @@
                                                 <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                                 @else
                                                 <option></option>
-                                                <option>Feminino</option>
-                                                <option>Masculino</option>
+                                                <option {{ old('sexo') == 'Feminino' ? 'selected' : '' }}>Feminino</option>
+                                                <option {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                                 @endif
                                             </select>
                                         </div>
@@ -65,7 +65,7 @@
                                         <div class="col-5">
                                             <label for="telefone">Telefone</label>
                                             <input type="text" id="telefonemask" name="telefone" class="form-control"
-                                                   value="{{ $aluno->telefone ?? '' }}" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}">
+                                                   value="{{ $aluno->telefone ?? old('telefone') }}" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}">
                                             <script type="text/javascript">
                                                 $('#telefonemask').mask('(00) 0000-00009');
                                             </script>
@@ -73,7 +73,7 @@
                                         <div class="col-5" style="margin-left: 48px;">
                                                 <label for="data_cadastro">Data do Cadastro</label>
                                                 <input class="form-control" id="datepicker" type="text" name='data_cadastro'
-                                                        value="{{ $aluno->data_cadastro ?? '' }}" required>
+                                                        value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required>
                                             <script type="text/javascript">
                                                 $('#datepicker').datepicker({  
                                                     dateFormat: 'dd-mm-yy',
@@ -85,7 +85,7 @@
                                         <div class="col-5">
                                             <label for="datepicker_data_nascimento">Data do Nascimento</label>
                                             <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento'
-                                                    value="{{ $aluno->data_nascimento ?? '' }}" required>
+                                                    value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" required>
                                             <script type="text/javascript">
                                                 $('#datepicker_data_nascimento').datepicker({  
                                                     dateFormat: 'dd-mm-yy',
@@ -109,10 +109,15 @@
                                     <div class="col-sm">
                                         <label for="dale">Tempo de Plano</label>
                                         <select class="form-control" name="tempoPlanoFunc">
-                                            <option value="1">Mensal</option>
-                                            <option value="3">Trimestral (desconto 10%)</option>
-                                            <option value="6">Semestral (desconto 15%)</option>
-                                            <option value="12">Anual (desconto 20%)</option>
+                                            @if(isset($temposDePlano['funcional']))
+                                                <option value="1" {{ $temposDePlano['funcional'] == 1 ? 'selected' : '' }}>Mensal</option>
+                                                <option value="3" {{ $temposDePlano['funcional'] == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
+                                                <option value="6" {{ $temposDePlano['funcional'] == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
+                                            @else
+                                                <option value="1" {{ old('tempoPlanoFunc') == 1 ? 'selected' : '' }}>Mensal</option>
+                                                <option value="3" {{ old('tempoPlanoFunc') == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
+                                                <option value="6" {{ old('tempoPlanoFunc') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -121,10 +126,15 @@
                                     <div class="col-sm">
                                         <label for="dale">Tempo de Plano</label>
                                         <select class="form-control" name="tempoPlanoFut">
-                                            <option value="1">Mensal</option>
-                                            <option value="3">Trimestral (desconto 10%)</option>
-                                            <option value="6">Semestral (desconto 15%)</option>
-                                            <option value="12">Anual (desconto 20%)</option>
+                                            @if(isset($temposDePlano['futvolei']))
+                                                <option value="1" {{ $temposDePlano['futvolei'] == 1 ? 'selected' : '' }}>Mensal</option>
+                                                <option value="3" {{ $temposDePlano['futvolei'] == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
+                                                <option value="6" {{ $temposDePlano['futvolei'] == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
+                                            @else
+                                                <option value="1" {{ old('tempoPlanoFut') == 1 ? 'selected' : '' }}>Mensal</option>
+                                                <option value="3" {{ old('tempoPlanoFut') == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
+                                                <option value="6" {{ old('tempoPlanoFut') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -137,7 +147,7 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id_func" class="card-input-element" value="" />
+                                                <input type="radio" name="plano_id_func" class="card-input-element"  value="" {{ !isset($aluno)?'checked':'' }}/>
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
                                                     <div class="panel-body column">
@@ -157,7 +167,8 @@
                                                 <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" 
                                                 {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
                                                 @else
-                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}" />
+                                                <input type="radio" name="plano_id_func" class="card-input-element" value="{{ $func->id }}"
+                                                {{ old('plano_id_func') == $func->id ? 'checked' : '' }}/>
                                                 @endif    
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading" style="color:black"><strong>{{$func->descricao}}</strong></div>
@@ -182,7 +193,7 @@
                                     <div class="container-radio column">
                                         <div>
                                             <label>
-                                                <input type="radio" name="plano_id_fut" class="card-input-element" value=""/>
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="" {{ !isset($aluno)?'checked':'' }}/>
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
                                                     <div class="panel-body column">
@@ -200,10 +211,11 @@
                                         <div>
                                             <label>
                                                 @if(isset($alunoPlanos))
-                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $func->id }}" 
-                                                {{ in_array($func->id, $alunoPlanos) ? 'checked' : ''}}/>
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $fut->id }}" 
+                                                {{ in_array($fut->id, $alunoPlanos) ? 'checked' : ''}}/>
                                                 @else
-                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $func->id }}" />
+                                                <input type="radio" name="plano_id_fut" class="card-input-element" value="{{ $fut->id }}"
+                                                {{ old('plano_id_fut') == $fut->id ? 'checked' : '' }}/>
                                                 @endif 
                                                 <div class="panel panel-default card-input">
                                                     <div class="panel-heading " style="color:black"><strong>{{$fut->descricao}}</strong></div>
