@@ -322,36 +322,42 @@ class AlunoController extends Controller
             $aluno->save();
 
             if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
-                DB::table('aluno_plano')->where('aluno_id', $id)->delete();
-                if(isset($dados['plano_id_func'])){
-                    $dadosFunc = [
-                        'aluno_id' => $aluno->id, 
-                        'plano_id' => $dados['plano_id_func'],
-                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                    DB::table('aluno_plano')->insert($dadosFunc);
-                }
-                if(isset($dados['plano_id_fut'])){
-                    $dadosFut = [
-                        'aluno_id' => $aluno->id, 
-                        'plano_id' => $dados['plano_id_fut'], 
-                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                    DB::table('aluno_plano')->insert($dadosFut);
-                }
-                $response = redirect()->route('listagem-alunos', ['categoria' => 'todos']);
+                $this->atualizarPlano($id, 1, $dados['plano_id_fut'] ?? null, $dados['tempoPlanoFut']);
+                $this->atualizarPlano($id, 2, $dados['plano_id_func'] ?? null, $dados['tempoPlanoFunc']);
+
+                $response = redirect()->route('listagem-alunos', ['categoria' => 'todos'])->with('sucesso', 'Cadastro Atualizado!');
             } else {
                 $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
             }
-            return $response;
         } catch (ValidationException $ex) {
             return back()->withInput()->withErrors($ex->getValidator());
         } catch (QueryException $e){
             return back()->withInput()->with('erro', $e->getMessage());
+        }
+    }
+
+    private function atualizarPlano($alunoId, $categoriaId, $planoId, $tempoPlano)
+    {
+        $plano = DB::table('aluno_plano')->where('aluno_id', $alunoId)
+                                         ->join('planos', 'planos.id', '=', 'plano_id')
+                                         ->where('planos.categoria_id', '=', $categoriaId)
+                                         ->first(['aluno_plano.id', 'aluno_plano.created_at']);
+        if(isset($planoId)){
+            $dados = [
+                'aluno_id' => $alunoId,
+                'plano_id' => $planoId,
+                'updated_at' => now(),
+            ];
+            if(isset($plano)){
+                $dados['data_expiracao'] = (Carbon::parse($plano->created_at))->addMonths($tempoPlano);
+                DB::table('aluno_plano')->where('id', '=', $plano->id)->update($dados);
+            } else {
+                $dados['created_at'] = now();
+                $dados['data_expiracao'] = (new Carbon())->addMonths($tempoPlano);
+                DB::table('aluno_plano')->insert($dados);
+            }
+        } elseif (isset($plano)){
+            DB::table('aluno_plano')->where('id', $plano->id)->delete();
         }
     }
 

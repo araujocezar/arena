@@ -17,9 +17,8 @@
                             <label for="descricao">Descrição do plano</label>
                             <input type="text" id="descricao" name="descricao" class="form-control {{ $errors->has('descricao') ? ' is-invalid' : '' }}" required>
                             @if ($errors->has('descricao'))
-                                <span id="email-error" class="error text-danger"
-                                      for="input-email">{{ $errors->first('descricao') }}
-                                </span>
+                            <span id="email-error" class="error text-danger" for="input-email">{{ $errors->first('descricao') }}
+                            </span>
                             @endif
                         </div>
                     </div>
@@ -37,13 +36,21 @@
                         <label for="tipo">Selecione uma categoria:</label>
                         <select required autofocus class="form-control" id="categoria_id" name="categoria_id">
                             @foreach ($categorias as $categoria)
-                                <option value="{{$categoria->id}}">{{$categoria->tipo}}</option>
+                            <option value="{{$categoria->id}}">{{$categoria->tipo}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-12">
-                        <label for="preco">Valor(R$)</label>
+                        <label for="preco">Valor Mensal(R$)</label>
                         <input required type="number" step="0.01" min="0" id="preco" name="preco" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <label for="preco">Valor Trimestral(R$)</label>
+                        <input required type="number" step="0.01" min="0" id="preco_trimestral" name="preco_trimestral" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <label for="preco">Valor Semestral(R$)</label>
+                        <input required type="number" step="0.01" min="0" id="preco_semestral" name="preco_semestral" class="form-control">
                     </div>
                     <div class=" modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

@@ -10,6 +10,11 @@
                         <h4 class="card-title ">Listagem dos Alunos</h4>
                     </div>
                     <div class="card-body">
+                        @if(session('erro'))
+                        <div class="alert alert-danger">{{ session('erro') }}</div>
+                        @elseif(session('sucesso'))
+                        <div class="alert alert-success">{{ session('sucesso') }}</div>
+                        @endif
                         @if (session('status'))
                             <div class="row">
                                 <div class="col-sm-12">
