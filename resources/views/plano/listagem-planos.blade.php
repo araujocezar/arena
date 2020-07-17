@@ -54,7 +54,7 @@
                                             R$ {{ $plano->preco }}
                                         </td>
                                         <td>
-                                            {{ $plano->categoria()->tipo }}
+                                            {{ $plano->categoria->tipo }}
                                         </td>
                                         <td class="input-group-append">
                                             <button type='button' class="btn btn-sm btn-success btn-link" data-toggle="modal" 
