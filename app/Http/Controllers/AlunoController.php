@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Aluno;
 use App\Plano;
 use App\PresencaAluno;
+use App\Validators\AlunoValidator;
+use App\Validators\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -235,13 +237,16 @@ class AlunoController extends Controller
 
     public function save(Request $request)
     {
-        $dados = $request->all();
         try{
+            $request->merge(['id' => -1]);
+            $dados = $request->all();
+            AlunoValidator::validate($dados);
             if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
                 $aluno = new Aluno();
                 $aluno->fill($dados);
-                $aluno->data_expiracao = now();
-                $aluno->data_cadastro = now();
+                if (!isset($aluno->data_cadastro)) {
+                    $aluno->data_cadastro = now();
+                }
                 $aluno->save();
                 
                 if(isset($dados['plano_id_func'])){
@@ -267,14 +272,14 @@ class AlunoController extends Controller
                     DB::table('aluno_plano')->insert($dadosFut);
                 }
                 
-                $response = redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
+                return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
             } else {
-                $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!!!');
+                return back()->withInput()->with('erro', 'Selecione ao menos um plano!!!');
             }
+        } catch (ValidationException $ex) {
+            return back()->withInput()->withErrors($ex->getValidator());
         } catch (QueryException $e){
-            $response = back()->withInput()->with('erro', $e->getMessage());
-        } finally{
-            return $response;
+            return back()->withInput()->with('erro', $e->getMessage());
         }        
     }
 
@@ -306,41 +311,48 @@ class AlunoController extends Controller
 
     public function atualizarAluno(Request $request, $id)
     {
-        $dados = $request->all();
+        try{
+            $request->merge(['id' => $id]);
+            $dados = $request->all();
+            AlunoValidator::validate($dados);
 
-        $aluno = Aluno::firstWhere('id', $id);            
-        $aluno->fill($dados);
-        $aluno->data_expiracao = now();
-        $aluno->save();
+            $aluno = Aluno::firstWhere('id', $id);            
+            $aluno->fill($dados);
+            $aluno->data_expiracao = now();
+            $aluno->save();
 
-        if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
-            DB::table('aluno_plano')->where('aluno_id', $id)->delete();
-            if(isset($dados['plano_id_func'])){
-                $dadosFunc = [
-                    'aluno_id' => $aluno->id, 
-                    'plano_id' => $dados['plano_id_func'],
-                    'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                DB::table('aluno_plano')->insert($dadosFunc);
+            if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+                DB::table('aluno_plano')->where('aluno_id', $id)->delete();
+                if(isset($dados['plano_id_func'])){
+                    $dadosFunc = [
+                        'aluno_id' => $aluno->id, 
+                        'plano_id' => $dados['plano_id_func'],
+                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    DB::table('aluno_plano')->insert($dadosFunc);
+                }
+                if(isset($dados['plano_id_fut'])){
+                    $dadosFut = [
+                        'aluno_id' => $aluno->id, 
+                        'plano_id' => $dados['plano_id_fut'], 
+                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    DB::table('aluno_plano')->insert($dadosFut);
+                }
+                $response = redirect()->route('listagem-alunos', ['categoria' => 'todos']);
+            } else {
+                $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
             }
-            if(isset($dados['plano_id_fut'])){
-                $dadosFut = [
-                    'aluno_id' => $aluno->id, 
-                    'plano_id' => $dados['plano_id_fut'], 
-                    'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                DB::table('aluno_plano')->insert($dadosFut);
-            }
-            $response = redirect()->route('listagem-alunos', ['categoria' => 'todos']);
-        } else {
-            $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
+            return $response;
+        } catch (ValidationException $ex) {
+            return back()->withInput()->withErrors($ex->getValidator());
+        } catch (QueryException $e){
+            return back()->withInput()->with('erro', $e->getMessage());
         }
-
-        return $response;
     }
 
     public function deletarPresenca($id)

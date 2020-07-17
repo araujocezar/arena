@@ -32,11 +32,19 @@
                                         <div class="col-5">
                                             <label for="nome">Nome</label>
                                             <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? old('nome') }}" required>
+                                            @if ($errors->has('nome'))
+                                                <span id="nome_item-error" class="error text-danger"
+                                                      for="input-nome">{{ $errors->first('nome') }}</span>
+                                            @endif
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
                                             <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf"
                                                    value="{{ $aluno->cpf ?? old('cpf') }}" required>
+                                            @if ($errors->has('cpf'))
+                                                <span id="nome_item-error" class="error text-danger"
+                                                      for="input-nome">{{ $errors->first('cpf') }}</span>
+                                            @endif
                                             <script type="text/javascript">
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
@@ -49,7 +57,7 @@
                                         </div>
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="sexo">Sexo:</label>
-                                            <select class="form-control" id="sexo" name="sexo" required>
+                                            <select class="form-control" id="sexo" name="sexo">
                                                 @if (isset($aluno))
                                                 <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
                                                 <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
@@ -73,7 +81,7 @@
                                         <div class="col-5" style="margin-left: 48px;">
                                                 <label for="data_cadastro">Data do Cadastro</label>
                                                 <input class="form-control" id="datepicker" type="text" name='data_cadastro'
-                                                        value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required>
+                                                        value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}">
                                             <script type="text/javascript">
                                                 $('#datepicker').datepicker({  
                                                     dateFormat: 'dd-mm-yy',
@@ -85,7 +93,7 @@
                                         <div class="col-5">
                                             <label for="datepicker_data_nascimento">Data do Nascimento</label>
                                             <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento'
-                                                    value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" required>
+                                                    value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}">
                                             <script type="text/javascript">
                                                 $('#datepicker_data_nascimento').datepicker({  
                                                     dateFormat: 'dd-mm-yy',
