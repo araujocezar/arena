@@ -18,7 +18,8 @@ class CreatePlanosTable extends Migration
             $table->string('descricao');
             $table->integer('dias_semana');
             $table->double('preco');
-            $table->double('preco_promocional')->nullable();
+            $table->double('preco_trimestral');
+            $table->double('preco_semestral');
             $table->integer('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->timestamps();
