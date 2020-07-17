@@ -17,12 +17,11 @@ class CreateAlunosTable extends Migration
             $table->increments('id');
             $table->string('cpf')->unique();
             $table->string('nome');
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('sexo')->nullable();
             $table->string('telefone')->nullable();
             $table->timestamp('data_cadastro');
-            $table->timestamp('data_nascimento');
-            $table->timestamp('data_expiracao');
+            $table->timestamp('data_nascimento')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Plano extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['descricao', 'dias_semana', 'categoria_id', 'preco'];
+    protected $fillable = ['descricao', 'dias_semana', 'categoria_id', 'preco', 'preco_trimestral', 'preco_semestral'];
     public static $rules = [
         'descricao' => 'required',
         'preco' => 'required',
