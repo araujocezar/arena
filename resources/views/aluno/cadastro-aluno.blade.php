@@ -119,6 +119,15 @@
                                                 <option value="6" {{ old('tempoPlanoFunc') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
                                             @endif
                                         </select>
+                                        @if(isset($aluno))
+                                            <br>
+                                            <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
+                                                            'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
+                                                <b>Renovar Plano ?</b>
+                                            </label>
+                                            <label><input type="radio" name="renovarPlanoFunc" value="sim"> Sim</label>
+                                            <label><input type="radio" name="renovarPlanoFunc" value="nao" checked> Não</label>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-sm">
@@ -136,6 +145,15 @@
                                                 <option value="6" {{ old('tempoPlanoFut') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>
                                             @endif
                                         </select>
+                                        @if(isset($aluno))
+                                            <br>
+                                            <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
+                                                            'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
+                                                <b>Renovar Plano ?</b>
+                                            </label>
+                                            <label><input type="radio" name="renovarPlanoFut" value="sim"> Sim</label>
+                                            <label><input type="radio" name="renovarPlanoFut" value="nao" checked> Não</label>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-sm">
