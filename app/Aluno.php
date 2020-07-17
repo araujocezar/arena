@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Aluno extends Model
 {
@@ -24,5 +26,15 @@ class Aluno extends Model
     ];
     public function planos(){
         return $this->belongsToMany('App\Plano');
+    }
+
+    public function tempoDoPlano($plano_id)
+    {
+        $plano = DB::table('aluno_plano')->where('aluno_id', $this->id)->where('plano_id', '=', $plano_id)->first();
+
+        $dataCriado = Carbon::parse($plano->created_at);
+        $dataExpiracao = Carbon::parse($plano->data_expiracao);
+
+        return $dataCriado->diffInMonths($dataExpiracao);
     }
 }
