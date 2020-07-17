@@ -107,12 +107,12 @@
                                                 <select class="form-control" name="tempoPlanoFunc">
                                                     @if(isset($temposDePlano['funcional']))
                                                     <option value="1" {{ $temposDePlano['funcional'] == 1 ? 'selected' : '' }}>Mensal</option>
-                                                    <option value="3" {{ $temposDePlano['funcional'] == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                    <option value="6" {{ $temposDePlano['funcional'] == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>
+                                                    <option value="3" {{ $temposDePlano['funcional'] == 3 ? 'selected' : '' }}>Trimestral </option>
+                                                    <option value="6" {{ $temposDePlano['funcional'] == 6 ? 'selected' : '' }}>Semestral </option>
                                                     @else
                                                     <option value="1" {{ old('tempoPlanoFunc') == 1 ? 'selected' : '' }}>Mensal</option>
-                                                    <option value="3" {{ old('tempoPlanoFunc') == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                    <option value="6" {{ old('tempoPlanoFunc') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>
+                                                    <option value="3" {{ old('tempoPlanoFunc') == 3 ? 'selected' : '' }}>Trimestral </option>
+                                                    <option value="6" {{ old('tempoPlanoFunc') == 6 ? 'selected' : '' }}>Semestral </option>
                                                     @endif
                                                 </select>
                                             </div>
