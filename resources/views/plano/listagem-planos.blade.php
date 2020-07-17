@@ -32,7 +32,7 @@
                                         Dias na semana
                                     </th>
                                     <th>
-                                        Preço
+                                        Preço Mensal
                                     </th>
                                     <th>
                                         Categoria
