@@ -269,7 +269,7 @@ class AlunoController extends Controller
                 
                 $response = redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
             } else {
-                $response = back()->withInput()->with('erro', 'Informe o(s) plano(s)!!!');
+                $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!!!');
             }
         } catch (QueryException $e){
             $response = back()->withInput()->with('erro', $e->getMessage());
@@ -283,16 +283,22 @@ class AlunoController extends Controller
         $aluno = Aluno::firstWhere('id', $id);            
         $alunoPlanos = DB::table('aluno_plano')->where('aluno_id', $id)->pluck('plano_id')->toArray();
 
-        $planos = Plano::all();
         $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
         $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
         
+        $temposDePlano = [];
+
+        foreach($alunoPlanos as $idPlano){
+            $plano = Plano::firstWhere('id', $idPlano);
+            $temposDePlano[$plano->categoria->tipo] = $aluno->tempoDoPlano($idPlano);
+        }
+        
         $dados = [
-            'planos' => $planos, 
             'funcionais' => $planos_funcional,
             'futvolei' => $planos_futvolei,
             'aluno' => $aluno,
             'alunoPlanos' => $alunoPlanos,
+            'temposDePlano' => $temposDePlano,
         ];
 
         return view('aluno.cadastro-aluno', $dados);
@@ -307,30 +313,34 @@ class AlunoController extends Controller
         $aluno->data_expiracao = now();
         $aluno->save();
 
-        DB::table('aluno_plano')->where('aluno_id', $id)->delete();
-
-        if(isset($dados['plano_id_func'])){
-            $dadosFunc = [
-                'aluno_id' => $aluno->id, 
-                'plano_id' => $dados['plano_id_func'],
-                'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-            DB::table('aluno_plano')->insert($dadosFunc);
+        if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+            DB::table('aluno_plano')->where('aluno_id', $id)->delete();
+            if(isset($dados['plano_id_func'])){
+                $dadosFunc = [
+                    'aluno_id' => $aluno->id, 
+                    'plano_id' => $dados['plano_id_func'],
+                    'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFunc']),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                DB::table('aluno_plano')->insert($dadosFunc);
+            }
+            if(isset($dados['plano_id_fut'])){
+                $dadosFut = [
+                    'aluno_id' => $aluno->id, 
+                    'plano_id' => $dados['plano_id_fut'], 
+                    'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                DB::table('aluno_plano')->insert($dadosFut);
+            }
+            $response = redirect()->route('listagem-alunos', ['categoria' => 'todos']);
+        } else {
+            $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
         }
-        if(isset($dados['plano_id_fut'])){
-            $dadosFut = [
-                'aluno_id' => $aluno->id, 
-                'plano_id' => $dados['plano_id_fut'], 
-                'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoFut']),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-            DB::table('aluno_plano')->insert($dadosFut);
-        }
 
-        return redirect()->route('listagem-alunos', ['categoria' => 'todos']);
+        return $response;
     }
 
     public function deletarPresenca($id)
