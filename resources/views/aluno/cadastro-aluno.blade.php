@@ -25,21 +25,29 @@
                                 @method('put')
                                 @else
                                 @method('post')
-                                @endif
-                                <div style="padding: 48px;">
-                                    <div class="form-column">
-                                        <div class="form-row">
-                                            <div class="col-5">
-                                                <label for="nome">Nome</label>
-                                                <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? old('nome') }}" required>
-                                            </div>
-                                            <div class="col-5" style="margin-left: 48px;">
-                                                <label for="cpf">CPF</label>
-                                                <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf" value="{{ $aluno->cpf ?? old('cpf') }}" required>
-                                                <script type="text/javascript">
-                                                    $('#cpfmask').mask('000.000.000-00');
-                                                </script>
-                                            </div>
+                            @endif
+                            <div style="padding: 48px;">
+                                <div class="form-column">
+                                    <div class="form-row">
+                                        <div class="col-5">
+                                            <label for="nome">Nome</label>
+                                            <input type="text" id="nome" name="nome" class="form-control" value="{{ $aluno->nome ?? old('nome') }}" required>
+                                            @if ($errors->has('nome'))
+                                                <span id="nome_item-error" class="error text-danger"
+                                                      for="input-nome">{{ $errors->first('nome') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="col-5" style="margin-left: 48px;">
+                                            <label for="cpf">CPF</label>
+                                            <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf" value="{{ $aluno->cpf ?? old('cpf') }}" required>
+                                                   value="{{ $aluno->cpf ?? old('cpf') }}" required>
+                                            @if ($errors->has('cpf'))
+                                                <span id="nome_item-error" class="error text-danger"
+                                                      for="input-nome">{{ $errors->first('cpf') }}</span>
+                                            @endif
+                                            <script type="text/javascript">
+                                                $('#cpfmask').mask('000.000.000-00');
+                                            </script>
                                         </div>
                                         <div class="form-row" style="margin-top: 12px;">
                                             <div class="col-5" style="margin-top: 6px;">
