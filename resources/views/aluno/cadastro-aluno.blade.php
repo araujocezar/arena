@@ -69,25 +69,25 @@
                                                 </script>
                                             </div>
                                             <div class="col-5" style="margin-left: 48px;">
-                                                <label for="data_cadastro">Data do Cadastro</label>
-                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required>
-                                                <script type="text/javascript">
-                                                    $('#datepicker').datepicker({
-                                                        dateFormat: 'dd-mm-yy',
-                                                    });
-                                                </script>
-                                            </div>
-                                        </div>
-                                        <div class="form-row" style="margin-top: 12px;">
-                                            <div class="col-5">
                                                 <label for="datepicker_data_nascimento">Data do Nascimento</label>
-                                                <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" required>
+                                                <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" required autocomplete="off">
                                                 <script type="text/javascript">
                                                     $('#datepicker_data_nascimento').datepicker({
                                                         dateFormat: 'dd-mm-yy',
                                                         changeYear: true,
                                                         changeMonth: true,
                                                         yearRange: '1910:2020'
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="margin-top: 12px;">
+                                            <div class="col-5">
+                                                <label for="data_cadastro">Data do Cadastro</label>
+                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required autocomplete="off">
+                                                <script type="text/javascript">
+                                                    $('#datepicker').datepicker({
+                                                        dateFormat: 'dd-mm-yy',
                                                     });
                                                 </script>
                                             </div>
