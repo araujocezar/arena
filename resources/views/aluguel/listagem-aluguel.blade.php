@@ -145,14 +145,14 @@
                     </div>
                     <div class="form-group col-12">
                         <label for="tempo">Selecione quantas horas</label>
-                        <select class="form-control" id="tempo" name="tempo">
+                        <select class="form-control" id="tempo" name="tempo" required>
                             <option>1</option>
                             <option>2</option>
                         </select>
                     </div>
                     <div class="form-group col-12">
                         <label for="turno">Selecione o turno</label>
-                        <select class="form-control" id="turno" name="turno">
+                        <select class="form-control" id="turno" name="turno" required>
                             <option value="3">Manhã</option>
                             <option value="4">Noite</option>
                         </select>

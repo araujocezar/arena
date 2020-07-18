@@ -13,16 +13,17 @@ class Aluno extends Model
     protected $fillable = ['cpf', 'nome', 'email', 'sexo', 'telefone', 'data_cadastro', 'data_nascimento'];
     protected $dates = ['data_cadastro', 'data_nascimento', 'created_at', 'updated_at', 'deleted_at'];
 
-    public static $rules = [
-        'cpf' => 'unique:alunos|min:11|max:11',
-
-    ];
+    //  Rules no arquivo de Validator
+    // public static $rules = [
+    //     'cpf' => 'required|unique:alunos|min:14|max:14',
+    //     'nome' => 'required',
+    // ];
 
     public static $messages = [
-        'unique' => 'o campo: attribute deve ser único',
-        'required'=> 'o campo: attribute é obrigatorio',
-        'min' => 'CPF deve conter 11 digítos',
-        'max' => 'CPF deve conter 11 digítos',
+        'unique' => 'o campo :attribute deve ser único',
+        'required'=> 'o campo :attribute é obrigatorio',
+        'min' => 'O CPF deve conter 11 digítos',
+        'max' => 'O CPF deve conter 11 digítos',
     ];
     public function planos(){
         return $this->belongsToMany('App\Plano');
