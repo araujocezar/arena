@@ -321,14 +321,15 @@ class AlunoController extends Controller
             $aluno->data_expiracao = now();
             $aluno->save();
 
-            if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
-                $this->atualizarPlano($id, 1, $dados['plano_id_fut'] ?? null, $dados['tempoPlanoFut']);
-                $this->atualizarPlano($id, 2, $dados['plano_id_func'] ?? null, $dados['tempoPlanoFunc']);
+        if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+            $this->atualizarPlano($id, 1, $dados['plano_id_fut'] ?? null, $dados['tempoPlanoFut'], $dados['renovarPlanoFut'] == 'sim');
+            $this->atualizarPlano($id, 2, $dados['plano_id_func'] ?? null, $dados['tempoPlanoFunc'], $dados['renovarPlanoFunc'] == 'sim');
 
                 $response = redirect()->route('listagem-alunos', ['categoria' => 'todos'])->with('sucesso', 'Cadastro Atualizado!');
             } else {
                 $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
             }
+            return $response;
         } catch (ValidationException $ex) {
             return back()->withInput()->withErrors($ex->getValidator());
         } catch (QueryException $e){
@@ -336,7 +337,7 @@ class AlunoController extends Controller
         }
     }
 
-    private function atualizarPlano($alunoId, $categoriaId, $planoId, $tempoPlano)
+    private function atualizarPlano($alunoId, $categoriaId, $planoId, $tempoPlano, $renovar)
     {
         $plano = DB::table('aluno_plano')->where('aluno_id', $alunoId)
                                          ->join('planos', 'planos.id', '=', 'plano_id')
@@ -348,8 +349,9 @@ class AlunoController extends Controller
                 'plano_id' => $planoId,
                 'updated_at' => now(),
             ];
+            
             if(isset($plano)){
-                $dados['data_expiracao'] = (Carbon::parse($plano->created_at))->addMonths($tempoPlano);
+                $dados['data_expiracao'] = $renovar ? (new Carbon())->addMonths($tempoPlano) : (Carbon::parse($plano->created_at))->addMonths($tempoPlano);
                 DB::table('aluno_plano')->where('id', '=', $plano->id)->update($dados);
             } else {
                 $dados['created_at'] = now();
