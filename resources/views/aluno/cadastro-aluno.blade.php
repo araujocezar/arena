@@ -40,7 +40,6 @@
                                         <div class="col-5" style="margin-left: 48px;">
                                             <label for="cpf">CPF</label>
                                             <input type="text" minlength="14" maxlength="14" class="form-control" id="cpfmask" name="cpf" value="{{ $aluno->cpf ?? old('cpf') }}" required>
-                                                   value="{{ $aluno->cpf ?? old('cpf') }}" required>
                                             @if ($errors->has('cpf'))
                                                 <span id="nome_item-error" class="error text-danger"
                                                       for="input-nome">{{ $errors->first('cpf') }}</span>
@@ -49,12 +48,13 @@
                                                 $('#cpfmask').mask('000.000.000-00');
                                             </script>
                                         </div>
-                                        <div class="form-row" style="margin-top: 12px;">
+                                    </div>
+                                    <div class="form-row" style="margin-top: 12px;">
                                             <div class="col-5" style="margin-top: 6px;">
                                                 <label for="email">Email</label>
                                                 <input type="text" id="email" name="email" class="form-control" value="{{ $aluno->email ?? old('email') }}">
                                             </div>
-                                            <div class="col-5" style="margin-left: 48px;">
+                                            <div class="col-2" style="margin-left: 48px;">
                                                 <label for="sexo">Sexo:</label>
                                                 <select class="form-control" id="sexo" name="sexo" required>
                                                     @if (isset($aluno))
@@ -67,13 +67,25 @@
                                                     @endif
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="form-row" style="margin-top: 12px;">
-                                            <div class="col-5">
+                                            <div class="col-3" style="margin-top: 6px;margin-left: 8px;">
                                                 <label for="telefone">Telefone</label>
                                                 <input type="text" id="telefonemask" name="telefone" class="form-control" value="{{ $aluno->telefone ?? old('telefone') }}" pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4,5}">
                                                 <script type="text/javascript">
                                                     $('#telefonemask').mask('(00) 0000-00009');
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="margin-top: 12px;">
+                                            
+                                        </div>
+                                        <div class="form-row" style="margin-top: 12px;">
+                                            <div class="col-5">
+                                                <label for="data_cadastro">Data do Cadastro</label>
+                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required autocomplete="off">
+                                                <script type="text/javascript">
+                                                    $('#datepicker').datepicker({
+                                                        dateFormat: 'dd-mm-yy',
+                                                    });
                                                 </script>
                                             </div>
                                             <div class="col-5" style="margin-left: 48px;">
@@ -89,75 +101,16 @@
                                                 </script>
                                             </div>
                                         </div>
-                                        <div class="form-row" style="margin-top: 12px;">
-                                            <div class="col-5">
-                                                <label for="data_cadastro">Data do Cadastro</label>
-                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required autocomplete="off">
-                                                <script type="text/javascript">
-                                                    $('#datepicker').datepicker({
-                                                        dateFormat: 'dd-mm-yy',
-                                                    });
-                                                </script>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                         <div class="content">
                             <div class="card-header">
                                 <h4><strong>Selecione o plano</strong></h4>
                             </div>
-                            <div class="card-header row">
-                                <div class="teste col-sm">
-                                    <h4><strong>FUNCIONAL</strong></h4>
-                                    <div class="col-sm">
-                                        <label for="dale">Tempo de Plano</label>
-                                        <select class="form-control" name="tempoPlanoFunc">
-                                            @if(isset($temposDePlano['funcional']))
-                                                <option value="1" {{ $temposDePlano['funcional'] == 1 ? 'selected' : '' }}>Mensal</option>
-                                                <option value="3" {{ $temposDePlano['funcional'] == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                <option value="6" {{ $temposDePlano['funcional'] == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
-                                            @else
-                                                <option value="1" {{ old('tempoPlanoFunc') == 1 ? 'selected' : '' }}>Mensal</option>
-                                                <option value="3" {{ old('tempoPlanoFunc') == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                <option value="6" {{ old('tempoPlanoFunc') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
-                                            @endif
-                                        </select>
-                                        @if(isset($aluno))
-                                            <br>
-                                            <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
-                                                            'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
-                                                <b>Renovar Plano ?</b>
-                                            </label>
-                                            <label><input type="radio" name="renovarPlanoFunc" value="sim"> Sim</label>
-                                            <label><input type="radio" name="renovarPlanoFunc" value="nao" checked> Não</label>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <h4><strong>FUTVÔLEI</strong></h4>
-                                    <div class="col-sm">
-                                        <label for="dale">Tempo de Plano</label>
-                                        <select class="form-control" name="tempoPlanoFut">
-                                            @if(isset($temposDePlano['futvolei']))
-                                                <option value="1" {{ $temposDePlano['futvolei'] == 1 ? 'selected' : '' }}>Mensal</option>
-                                                <option value="3" {{ $temposDePlano['futvolei'] == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                <option value="6" {{ $temposDePlano['futvolei'] == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>    
-                                            @else
-                                                <option value="1" {{ old('tempoPlanoFut') == 1 ? 'selected' : '' }}>Mensal</option>
-                                                <option value="3" {{ old('tempoPlanoFut') == 3 ? 'selected' : '' }}>Trimestral (desconto 10%)</option>
-                                                <option value="6" {{ old('tempoPlanoFut') == 6 ? 'selected' : '' }}>Semestral (desconto 15%)</option>
-                                            @endif
-                                        </select>
-                                        @if(isset($aluno))
-                                            <br>
-                                            <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
-                                                            'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
-                                                <b>Renovar Plano ?</b>
-                                            </label>
-                                            <label><input type="radio" name="renovarPlanoFut" value="sim"> Sim</label>
-                                            <label><input type="radio" name="renovarPlanoFut" value="nao" checked> Não</label>
-                                        @endif
+                            <div class="card-header row">    
+                                <div class="content">
+                                    <div class="card-header">
+                                        <h4><strong>Selecione o plano</strong></h4>
                                     </div>
                                     <div class="card-header row">
                                         <div class="teste col-sm">
@@ -176,6 +129,15 @@
                                                     @endif
                                                 </select>
                                             </div>
+                                            @if(isset($aluno))
+                                                <br>
+                                                <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
+                                                                'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado.'}}">
+                                                    <b>Renovar Plano ?</b>
+                                                </label>
+                                                <label><input type="radio" name="renovarPlanoFunc" value="sim"> Sim</label>
+                                                <label><input type="radio" name="renovarPlanoFunc" value="nao" checked> Não</label>
+                                            @endif
                                         </div>
                                         <div class="col-sm">
                                             <h4><strong>FUTVÔLEI</strong></h4>
@@ -193,6 +155,15 @@
                                                     @endif
                                                 </select>
                                             </div>
+                                            @if(isset($aluno))
+                                                <br>
+                                                <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
+                                                                'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
+                                                    <b>Renovar Plano ?</b>
+                                                </label>
+                                                <label><input type="radio" name="renovarPlanoFut" value="sim"> Sim</label>
+                                                <label><input type="radio" name="renovarPlanoFut" value="nao" checked> Não</label>
+                                            @endif
                                         </div>
                                         <div class="col-sm">
                                             <h4><strong>COMBO</strong></h4>
