@@ -329,6 +329,7 @@ class AlunoController extends Controller
             } else {
                 $response = back()->withInput()->with('erro', 'Selecione ao menos um plano!');
             }
+            return $response;
         } catch (ValidationException $ex) {
             return back()->withInput()->withErrors($ex->getValidator());
         } catch (QueryException $e){
