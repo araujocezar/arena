@@ -12,7 +12,6 @@ $factory->define(Aluno::class, function (Faker $faker) {
         'email'=>$faker->email,
         'data_cadastro'=>$faker->date(),
         'data_nascimento'=>$faker->date(),
-        'data_expiracao'=>$faker->date(),
         'telefone'=>$faker->phoneNumber,
     ];
 });
