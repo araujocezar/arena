@@ -51,12 +51,14 @@
                             <div class="col-lg-auto">
                                 <span class="bmd-form-group">{{ $aluno->cpf }}</span>
                             </div>
+                            @if(isset($aluno->data_nascimento))
                             <div class="col-lg-auto">
                                 <span class="bmd-form-group"><label>Data aniversário: </label></span>
                             </div>
                             <div class="col-lg-auto">
                                 <span class="bmd-form-group">{{ $aluno->data_nascimento->format('d-m-Y') }}</span>
                             </div>
+                            @endif
                         </div>
                         <br>
                         <label for="">Planos Ativos </label>
@@ -91,7 +93,7 @@
                                                                     Expira em {{ strftime("%d-%m-%Y", strtotime($datasExpiracao[$plano->id])) }}
                                                                 </span>
                                                             </p>
-                                                        </h3>
+                                                            </h3>
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,20 +124,20 @@
                             </thead>
                             <tbody>
                                 @foreach($presencasHoje as $presenca)
-                                    <tr>
-                                        <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria->tipo }}</td>
-                                        <td>{{ $presenca->aluno()->nome ?? '' }}</td>
-                                        <td>{{ $presenca->created_at->format('H:i:s d-m-Y') }}</td>
-                                        <td>
-                                            <form action="{{ route('presenca.delete', $presenca->id) }}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-link btn-danger" onclick="return confirm('Você tem certeza?')">
-                                                    <i class=" material-icons">delete</i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $presenca->plano()->descricao }} / {{ $presenca->plano()->categoria->tipo }}</td>
+                                    <td>{{ $presenca->aluno()->nome ?? '' }}</td>
+                                    <td>{{ $presenca->created_at->format('H:i:s d-m-Y') }}</td>
+                                    <td>
+                                        <form action="{{ route('presenca.delete', $presenca->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-link btn-danger" onclick="return confirm('Você tem certeza?')">
+                                                <i class=" material-icons">delete</i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
