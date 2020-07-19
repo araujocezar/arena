@@ -12,6 +12,6 @@ $factory->define(Plano::class, function (Faker $faker) {
         'preco' => $faker->numberBetween(80, 120),
         'preco_trimestral' => $faker->numberBetween(80, 120),
         'preco_semestral' => $faker->numberBetween(80, 120),
-        'categoria_id' => $faker->numberBetween(1, 2)
+        'categoria_id' => $faker->numberBetween(1, 3)
     ];
 });

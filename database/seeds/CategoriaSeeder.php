@@ -22,5 +22,11 @@ class CategoriaSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        DB::table('categorias')->insert([
+            'tipo' => 'combo',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }

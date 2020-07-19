@@ -138,12 +138,14 @@ class AlunoController extends Controller
                 $lista = Aluno::paginate($this->limite_pagina);
             } elseif ($parametros == 'futvolei') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
-                    $query->where('categoria_id', '=', '1');
+                    $query->where('categoria_id', '=', '1')
+                        ->orWhere('categoria_id', '=', '3');
                 })->paginate($this->limite_pagina);
                 $activePage = 'listagem-futvolei';
             } elseif ($parametros == 'funcional') {
                 $lista = Aluno::whereHas('planos', function (Builder $query) {
-                    $query->where('categoria_id', '=', '2');
+                    $query->where('categoria_id', '=', '2')
+                    ->orWhere('categoria_id', '=', '3');
                 })->paginate($this->limite_pagina);
                 $activePage = 'listagem-funcional';
             }
@@ -231,8 +233,9 @@ class AlunoController extends Controller
         $planos = Plano::all();
         $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
         $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
+        $planos_combo = Plano::where('categoria_id', '=', 3)->get();
 
-        return view('aluno.cadastro-aluno', ['planos' => $planos, 'funcionais' => $planos_funcional, 'futvolei' => $planos_futvolei]);
+        return view('aluno.cadastro-aluno', ['planos' => $planos, 'funcionais' => $planos_funcional, 'futvolei' => $planos_futvolei, 'combos' => $planos_combo]);
     }
 
     public function save(Request $request)
@@ -241,7 +244,7 @@ class AlunoController extends Controller
             $request->merge(['id' => -1]);
             $dados = $request->all();
             AlunoValidator::validate($dados);
-            if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+            if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut']) || isset($dados['plano_id_com'])) {
                 $aluno = new Aluno();
                 $aluno->fill($dados);
                 if (!isset($aluno->data_cadastro)) {
@@ -270,6 +273,17 @@ class AlunoController extends Controller
                     ];
                         
                     DB::table('aluno_plano')->insert($dadosFut);
+                }
+                if(isset($dados['plano_id_com'])){
+                    $dadosCom = [
+                        'aluno_id' => $aluno->id, 
+                        'plano_id' => $dados['plano_id_com'], 
+                        'data_expiracao' => (new Carbon())->addMonths($dados['tempoPlanoCom']),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                        
+                    DB::table('aluno_plano')->insert($dadosCom);
                 }
                 
                 return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
@@ -324,6 +338,7 @@ class AlunoController extends Controller
         if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
             $this->atualizarPlano($id, 1, $dados['plano_id_fut'] ?? null, $dados['tempoPlanoFut'], $dados['renovarPlanoFut'] == 'sim');
             $this->atualizarPlano($id, 2, $dados['plano_id_func'] ?? null, $dados['tempoPlanoFunc'], $dados['renovarPlanoFunc'] == 'sim');
+            $this->atualizarPlano($id, 3, $dados['plano_id_com'] ?? null, $dados['tempoPlanoCom'], $dados['renovarPlanoCom'] == 'sim');
 
                 $response = redirect()->route('listagem-alunos', ['categoria' => 'todos'])->with('sucesso', 'Cadastro Atualizado!');
             } else {

@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="col-2" style="margin-left: 48px;">
                                                 <label for="sexo">Sexo:</label>
-                                                <select class="form-control" id="sexo" name="sexo" required>
+                                                <select class="form-control" id="sexo" name="sexo">
                                                     @if (isset($aluno))
                                                     <option {{ $aluno->sexo == 'Feminino' ? 'selected' : '' }}>Feminino</option>
                                                     <option {{ $aluno->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
@@ -81,7 +81,7 @@
                                         <div class="form-row" style="margin-top: 12px;">
                                             <div class="col-5">
                                                 <label for="data_cadastro">Data do Cadastro</label>
-                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" required autocomplete="off">
+                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" autocomplete="off">
                                                 <script type="text/javascript">
                                                     $('#datepicker').datepicker({
                                                         dateFormat: 'dd-mm-yy',
@@ -90,7 +90,7 @@
                                             </div>
                                             <div class="col-5" style="margin-left: 48px;">
                                                 <label for="datepicker_data_nascimento">Data do Nascimento</label>
-                                                <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" required autocomplete="off">
+                                                <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" autocomplete="off">
                                                 <script type="text/javascript">
                                                     $('#datepicker_data_nascimento').datepicker({
                                                         dateFormat: 'dd-mm-yy',
@@ -102,11 +102,8 @@
                                             </div>
                                         </div>
                                 </div>
-
-                        <div class="content">
-                            <div class="card-header">
-                                <h4><strong>Selecione o plano</strong></h4>
                             </div>
+                        <div class="content">
                             <div class="card-header row">    
                                 <div class="content">
                                     <div class="card-header">
@@ -166,7 +163,30 @@
                                             @endif
                                         </div>
                                         <div class="col-sm">
-                                            <h4><strong>COMBO</strong></h4>
+                                            <h4><strong>Combo</strong></h4>
+                                            <div class="col-sm">
+                                                <label for="dale">Tempo de Plano</label>
+                                                <select class="form-control" name="tempoPlanoCom">
+                                                    @if(isset($temposDePlano['combo']))
+                                                    <option value="1" {{ $temposDePlano['combo'] == 1 ? 'selected' : '' }}>Mensal</option>
+                                                    <option value="3" {{ $temposDePlano['combo'] == 3 ? 'selected' : '' }}>Trimestral </option>
+                                                    <option value="6" {{ $temposDePlano['combo'] == 6 ? 'selected' : '' }}>Semestral</option>
+                                                    @else
+                                                    <option value="1" {{ old('tempoPlanoCom') == 1 ? 'selected' : '' }}>Mensal</option>
+                                                    <option value="3" {{ old('tempoPlanoCom') == 3 ? 'selected' : '' }}>Trimestral </option>
+                                                    <option value="6" {{ old('tempoPlanoCom') == 6 ? 'selected' : '' }}>Semestral </option>
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            @if(isset($aluno))
+                                                <br>
+                                                <label title="{{'Sim - Renova a expiração do plano de acordo com a data atual e tempo selecionado. '.
+                                                                'Não - atualiza a expiração considerando a data de inicio anterior e tempo selecionado..'}}">
+                                                    <b>Renovar Plano ?</b>
+                                                </label>
+                                                <label><input type="radio" name="renovarPlanoCom" value="sim"> Sim</label>
+                                                <label><input type="radio" name="renovarPlanoCom" value="nao" checked> Não</label>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="card-header row">
@@ -275,25 +295,54 @@
                                             <div class="container-radio column">
                                                 <div>
                                                     <label>
-                                                        <input type="radio" name="plano_id" class="card-input-element" />
+                                                        <input type="radio" name="plano_id_com" class="card-input-element" value="" {{ !isset($aluno)?'checked':'' }} />
                                                         <div class="panel panel-default card-input">
-                                                            <div class="panel-heading" style="color:black"><strong>Combo 1 </strong></div>
+                                                            <div class="panel-heading " style="color:black"><strong>Nenhum</strong></div>
+                                                            <div class="panel-body column">
+                                                                <div>_</div>
+                                                                <div>_</div>
+                                                                <div>_</div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            @foreach ($combos as $com)
+                                            <div class="container-radio column">
+                                                <div>
+                                                    <label>
+                                                        @if(isset($alunoPlanos))
+                                                        <input type="radio" name="plano_id_com" class="card-input-element" value="{{ $com->id }}" {{ in_array($com->id, $alunoPlanos) ? 'checked' : ''}} />
+                                                        @else
+                                                        <input type="radio" name="plano_id_com" class="card-input-element" value="{{ $com->id }}" {{ old('plano_id_com') == $com->id ? 'checked' : '' }} />
+                                                        @endif
+                                                        <div class="panel panel-default card-input">
+                                                            <div class="panel-heading " style="color:black"><strong>{{$com->descricao}}</strong></div>
                                                             <div class="panel-body column">
                                                                 <div>
-                                                                    Modalidade: Funcional e Futvôlei
+                                                                    Modalidade: Combo
                                                                 </div>
                                                                 <div>
-                                                                    Dias na semana: 5
+                                                                    Dias na semana: {{$com->dias_semana}}
                                                                 </div>
                                                                 <div>
-                                                                    Valor: R$ 500,00
+                                                                    Valor: R$ {{$com->preco}}
+                                                                </div>
+                                                                <div>
+                                                                    Valor trimestral: R$ {{$com->preco_trimestral}}(R${{3*$com->preco_trimestral}})
+                                                                </div>
+                                                                <div>
+                                                                    Valor semestral: R$ {{$com->preco_semestral}}(R${{6*$com->preco_semestral}})
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </label>
                                                 </div>
                                             </div>
+                                            @endforeach
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-11">

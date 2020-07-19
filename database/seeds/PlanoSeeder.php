@@ -11,6 +11,6 @@ class PlanoSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Plano::class, 10)->create();
+        factory(App\Plano::class, 16)->create();
     }
 }
