@@ -288,7 +288,7 @@ class AlunoController extends Controller
                 
                 return redirect()->route('listagem-alunos', 'todos')->withStatus(__('Aluno cadastrado com sucesso.'));
             } else {
-                return back()->withInput()->with('erro', 'Selecione ao menos um plano!!!');
+                return back()->withInput()->with('erro', 'Selecione ao menos um plano.');
             }
         } catch (ValidationException $ex) {
             return back()->withInput()->withErrors($ex->getValidator());
@@ -304,6 +304,7 @@ class AlunoController extends Controller
 
         $planos_futvolei = Plano::where('categoria_id', '=', 1)->get();
         $planos_funcional = Plano::where('categoria_id', '=', 2)->get();
+        $planos_combos = Plano::where('categoria_id', '=', 3)->get();
         
         $temposDePlano = [];
 
@@ -315,6 +316,7 @@ class AlunoController extends Controller
         $dados = [
             'funcionais' => $planos_funcional,
             'futvolei' => $planos_futvolei,
+            'combos' => $planos_combos,
             'aluno' => $aluno,
             'alunoPlanos' => $alunoPlanos,
             'temposDePlano' => $temposDePlano,
