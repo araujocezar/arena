@@ -53,6 +53,10 @@
                                             <div class="col-5" style="margin-top: 6px;">
                                                 <label for="email">Email</label>
                                                 <input type="text" id="email" name="email" class="form-control" value="{{ $aluno->email ?? old('email') }}">
+                                                @if ($errors->has('email'))
+                                                    <span id="nome_item-error" class="error text-danger"
+                                                      for="input-nome">{{ $errors->first('email') }}</span>
+                                                @endif
                                             </div>
                                             <div class="col-2" style="margin-left: 48px;">
                                                 <label for="sexo">Sexo:</label>
@@ -80,15 +84,6 @@
                                         </div>
                                         <div class="form-row" style="margin-top: 12px;">
                                             <div class="col-5">
-                                                <label for="data_cadastro">Data do Cadastro</label>
-                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" autocomplete="off">
-                                                <script type="text/javascript">
-                                                    $('#datepicker').datepicker({
-                                                        dateFormat: 'dd-mm-yy',
-                                                    });
-                                                </script>
-                                            </div>
-                                            <div class="col-5" style="margin-left: 48px;">
                                                 <label for="datepicker_data_nascimento">Data do Nascimento</label>
                                                 <input class="form-control" id="datepicker_data_nascimento" type="text" name='data_nascimento' value="{{ $aluno->data_nascimento ?? old('data_nascimento') }}" autocomplete="off">
                                                 <script type="text/javascript">
@@ -96,8 +91,42 @@
                                                         dateFormat: 'dd-mm-yy',
                                                         changeYear: true,
                                                         changeMonth: true,
-                                                        yearRange: '1910:2020'
+                                                        yearRange: '1910:2020',
+                                                        locale: 'pt-br',
                                                     });
+                                                    jQuery(function($){
+                                                        $.datepicker.regional['pt-BR'] = {
+                                                                closeText: 'Fechar',
+                                                                prevText: '&#x3c;Anterior',
+                                                                nextText: 'Pr&oacute;ximo&#x3e;',
+                                                                currentText: 'Hoje',
+                                                                monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho',
+                                                                'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                                                                monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun',
+                                                                'Jul','Ago','Set','Out','Nov','Dez'],
+                                                                dayNames: ['Domingo','Segunda-feira','Ter&ccedil;a-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'],
+                                                                dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sab'],
+                                                                dayNamesMin: ['Dom','Seg','Ter','Qua','Qui','Sex','Sab'],
+                                                                weekHeader: 'Sm',
+                                                                dateFormat: 'dd/mm/yy',
+                                                                firstDay: 0,
+                                                                isRTL: false,
+                                                                showMonthAfterYear: false,
+                                                                yearSuffix: ''};
+                                                        $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+                                                    });
+                                                </script>
+                                            </div>
+                                            <div class="col-5"  style="margin-left: 48px;">
+                                                <label for="data_cadastro">Data do Cadastro</label>
+                                                <input class="form-control" id="datepicker" type="text" name='data_cadastro' value="{{ $aluno->data_cadastro ?? old('data_cadastro') }}" autocomplete="off">
+                                                <script type="text/javascript">
+                                                    $('#datepicker').datepicker({
+                                                        dateFormat: 'dd-mm-yy',
+                                                        locale: 'pt-br',
+
+                                                    });
+                                                    
                                                 </script>
                                             </div>
                                         </div>
@@ -345,9 +374,11 @@
 
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-md-11">
-                                    <button type="submit" class="btn btn-primary pull-right" style="width: 140px;">SALVAR</button>
-                                </div>
+                            </div>
+                        </div>
+                            <div class="col-sm-4 col-md-11">
+                                <button type="submit" class="btn btn-primary pull-right" style="width: 140px;">SALVAR</button>
+                            </div>
                             </form>
                         </div>
                     </div>
@@ -364,6 +395,17 @@
         display: none;
     }
 
+    /* .ui-datepicker .ui-widget-content {
+        background: #999 none;
+    } */
+
+    .ui-datepicker-year{
+        color: black !important;
+    }
+    .ui-datepicker-month{
+        color: black !important;
+
+    }
     .card-input {
         margin: 10px;
         padding: 00px;
@@ -375,5 +417,9 @@
 
     .card-input-element:checked+.card-input {
         box-shadow: 0 0 1px 1px #2ecc71;
+    }
+    .tabela{
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 </style>
