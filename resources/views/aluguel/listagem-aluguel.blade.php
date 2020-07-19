@@ -75,7 +75,7 @@
                                             {{ $aluguel->nome }}
                                         </td>
                                         <td>
-                                            {{ $aluguel->data }}
+                                            {{ $aluguel->data->format('d-m-Y') }}
                                         </td>
                                         <td>
                                             {{ $aluguel->tempo }} Hora(s)
