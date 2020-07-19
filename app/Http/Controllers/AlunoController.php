@@ -75,28 +75,32 @@ class AlunoController extends Controller
 
     private function pegarPresencasAluno($alunoId, $planos)
     {
-        $ultimoDomingo = $this->pegarUltimoDomingo();
-        $hoje = new Carbon();
-        $presencasPorPlano = $this->pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje);
+        $presencasPorPlano = $this->pegarPresencasPorPlano($planos, $alunoId);
 
         return $presencasPorPlano;
     }
 
-    private function pegarPresencasPorPlano($planos, $alunoId, $ultimoDomingo, $hoje)
+    private function pegarPresencasPorPlano($planos, $alunoId)
     {
+        $data = date('Y').'-'.date('m').'-'.date('d');
+        $hoje = Carbon::parse($data);
+        $ultimoDomingo = $this->pegarUltimoDomingo($hoje);
         $presencasPorPlano = [];
+
         foreach ($planos as $plano) {
-            $presencasPorPlano[$plano->id] = PresencaAluno::whereBetween('created_at', [$ultimoDomingo, $hoje])
+            $presencasPorPlano[$plano->id] = PresencaAluno::where('aluno_id', $alunoId)
                                                           ->where('plano_id', $plano->id)
-                                                          ->where('aluno_id', $alunoId)->count();
+                                                          ->whereDate('created_at', '>=',$ultimoDomingo)
+                                                          ->whereDate('created_at', '<=',$hoje)
+                                                          ->count();
         }
 
         return $presencasPorPlano;
     }
 
-    private function pegarUltimoDomingo()
+    private function pegarUltimoDomingo(Carbon $data)
     {
-        $ultimoDomingo = new Carbon();
+        $ultimoDomingo = Carbon::parse($data->toDateTimeString());
 
         while ($ultimoDomingo->dayOfWeek != 0) {
             $ultimoDomingo->subDay();
@@ -118,7 +122,7 @@ class AlunoController extends Controller
                 $response = redirect()->route('inicio')->with('sucesso', 'Presenca registrada');
             } else {
                 $aluno = Aluno::firstWhere('id', $dados['aluno_id']);
-                $categoria = $plano->categoria();
+                $categoria = $plano->categoria;
                 $response = redirect()->route('inicio')->with('erro', "$aluno->nome já atingiu o limite semanal para o plano $categoria->tipo");
             }
         } else {
