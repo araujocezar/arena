@@ -75,8 +75,10 @@ var myChart = new Chart(ctx, {
             backgroundColor : [
                 'rgba(55, 255, 32, 1)',
                 'rgba(54, 162, 235, 1)',
+                'rgba(50, 16, 235, 1)',
             ],
             borderColor: [
+                'rgb(255, 255, 255)',
                 'rgb(255, 255, 255)',
                 'rgb(255, 255, 255)',
 
@@ -108,8 +110,10 @@ var myChart = new Chart(ctx, {
             backgroundColor : [
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
             ],
             borderColor: [
+                'rgba(54, 162, 235, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(54, 162, 235, 1)',
             ],
