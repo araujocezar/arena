@@ -165,7 +165,7 @@ class AlunoController extends Controller
         $busca = trim($request->busca);
         
         if ($busca === null || $busca === '') {
-            $aluno = Aluno::all();
+            $aluno = Aluno::paginate($this->limite_pagina);
         } else { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
             if(is_numeric($busca) && strlen($busca) == 11) {
                 $busca = substr($busca, 0, 3) . '.' . substr($busca, 3, 3) . '.' . substr($busca, 6, 3) . '-' . substr($busca, 9, 2);
