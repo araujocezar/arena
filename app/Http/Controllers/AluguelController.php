@@ -22,16 +22,14 @@ class AluguelController extends Controller
         if ($busca === null || $busca === '') {
             $lista = Aluguel::all();
             return view('aluguel.listagem-aluguel', ['alugueis' => $lista]);
+        } else { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
+            if(is_numeric($busca) && strlen($busca) == 11) {
+                $busca = substr($busca, 0, 3) . '.' . substr($busca, 3, 3) . '.' . substr($busca, 6, 3) . '-' . substr($busca, 9, 2);
+            }            
+            $alugueis = Aluguel::where('cpf', '=', $busca)
+                ->orWhere('nome', 'ilike',  '%' . $busca . '%')->get();
         }
-        $busca = $this->verificaCpf($request->busca);
-        if ($busca) { //após a verificação, valida se é um CPF, se for entra nesse primeiro if, caso contrario ele busca por nome
-            $cpf = $this->limpaCPF_CNPJ($request->busca);
-            $alugueis = Aluguel::where('cpf', '=', $cpf)->get();
             return view('aluguel.listagem-aluguel', ['alugueis' => $alugueis]);
-        } else {
-            $alugueis = Aluguel::where('nome', 'like',  '%' . $request->busca . '%')->get();
-            return view('aluguel.listagem-aluguel', ['alugueis' => $alugueis]);
-        }
     }
 
 
