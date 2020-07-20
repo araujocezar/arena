@@ -51,8 +51,21 @@ class RelatorioController extends Controller
         $planosDaCategoria = Plano::where('categoria_id', $categoriaId)->get();
             
         foreach ($planosDaCategoria as $plano) {
-            $quantAlunos = DB::table('aluno_plano')->where('plano_id', $plano->id)->count();
-            $totalCategoria += ($plano->preco * $quantAlunos);
+            $alunoPlanos = DB::table('aluno_plano')->where('plano_id', $plano->id)->get();
+
+            foreach($alunoPlanos as $ap){
+                $aluno = Aluno::firstWhere('id', $ap->aluno_id);
+                $tempoPlano = $aluno->tempoDoPlano($plano->id);
+
+                if($tempoPlano == 1) {
+                    $valor = $plano->preco;
+                } elseif($tempoPlano == 3) {
+                    $valor = $plano->preco_trimestral;
+                } else {
+                    $valor = $plano->preco_semestral;
+                }
+                $totalCategoria += $valor;
+            }
         }
 
         return $totalCategoria;
