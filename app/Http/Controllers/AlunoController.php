@@ -338,10 +338,9 @@ class AlunoController extends Controller
 
             $aluno = Aluno::firstWhere('id', $id);            
             $aluno->fill($dados);
-            $aluno->data_expiracao = now();
             $aluno->save();
 
-        if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut'])){
+        if(isset($dados['plano_id_func']) || isset($dados['plano_id_fut']) || $dados['plano_id_com']){
             $this->atualizarPlano($id, 1, $dados['plano_id_fut'] ?? null, $dados['tempoPlanoFut'], $dados['renovarPlanoFut'] == 'sim');
             $this->atualizarPlano($id, 2, $dados['plano_id_func'] ?? null, $dados['tempoPlanoFunc'], $dados['renovarPlanoFunc'] == 'sim');
             $this->atualizarPlano($id, 3, $dados['plano_id_com'] ?? null, $dados['tempoPlanoCom'], $dados['renovarPlanoCom'] == 'sim');
